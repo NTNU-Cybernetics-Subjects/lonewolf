@@ -10,8 +10,16 @@ devel
 
 # submodules that are not altered and are fetched
 # from dependencies_ssh.rosinstall
-src/misc/
-src/mapping/
+src/misc/catkin_simple/
+src/misc/eigen_catkin/
+src/misc/eigen_checks/
+src/misc/gflags_catkin/
+src/misc/glog_catkin/
+src/misc/minkindr/
+src/misc/minkindr_ros/
+src/misc/mav_comm/
+src/misc/yaml_cpp_catkin/
+src/mapping/voxblox/
 src/exploration/pci_general/
 src/exploration/adaptive_obb_ros/
 src/sim/rotors_simulator/
