@@ -33,7 +33,7 @@ ros-noetic-octomap-ros
 ```
 
 Clone and update the required packages:
-(make sure to bee in the project folder root:)
+(make sure to bee in the root project folder:)
 ```bash
 wstool init
 wstool merge dependecies_ssh.rosinstall
