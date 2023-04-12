@@ -44,16 +44,13 @@
 
 #EXPLORATION
 - git:
-    local-name: src/exploration/gbplanner_ros/
-    uri: git@github.com:ntnu-arl/gbplanner_ros.git
-    version: gbplanner2
-- git:
     local-name: src/exploration/pci_general/
     uri: git@github.com:ntnu-arl/pci_general.git
     version: main
 - git:
     local-name: src/exploration/adaptive_obb_ros/
     uri: git@github.com:ntnu-arl/adaptive_obb_ros.git
+    version: master
 
 # sim
 - git:
