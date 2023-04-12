@@ -1,5 +1,7 @@
-# Graph-based Exploration Planner 2.0
-![swag](img/cerberus_subt_winners.png)
+# Path planning simulation for an ATV in a terrain based enviroment
+
+This project is based on gbplanner_ros from ntnu-arl: [Link](https://github.com/ntnu-arl/gbplanner_ros).
+There are done some modification to better suit path planning in a terrain based enviroment, and the vehicle is changed to an model that is more like an actual ATV. The atv model is taken from [sigirdmellomseter/lonewolf](https://github.com/sigridmellemseter/lonewolf)
 
 ## Tutorial:
 Please refer to the [wiki](https://github.com/ntnu-arl/gbplanner_ros/wiki) page for detailed instructions to install and run the demo simulations as well as documentation of the planner interface and parameters.
@@ -30,26 +32,13 @@ ros-noetic-interactive-marker-twist-server \
 ros-noetic-octomap-ros
 ```
 
-
-Create the workspace:
-```bash
-mkdir -p gbplanner2_ws/src/exploration
-cd gbplanner2_ws/src/exploration
-```
-Clone the planner
-```bash
-git clone git@github.com:ntnu-arl/gbplanner_ros.git -b gbplanner2
-```
-
 Clone and update the required packages:
+(make sure to bee in the root project folder:)
 ```bash
-cd <path/to/gbplanner2_ws>
 wstool init
-wstool merge ./src/exploration/gbplanner_ros/packages_ssh.rosinstall
+wstool merge dependecies_ssh.rosinstall
 wstool update
 ```
-
-`Note: ./src/exploration/gbplanner_ros/packages_https.rosinstall can be used for https based urls.`
 
 Build:
 ```bash
