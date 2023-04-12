@@ -1,3 +1,9 @@
+
+
 .rosinstall
 .rosinstall.bak
 
+logs
+build
+devel
+.catkin_tools
