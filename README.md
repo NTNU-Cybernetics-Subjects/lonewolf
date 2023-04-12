@@ -33,7 +33,7 @@ ros-noetic-octomap-ros
 ```
 
 Clone and update the required packages:
-(make sure to bee in the root project folder:)
+(make sure to bee in the root project folder: <path_to_lonewolf> )
 ```bash
 wstool init
 wstool merge dependecies_ssh.rosinstall
