@@ -12,15 +12,6 @@ These instructions assume that ROS desktop-full of the appropriate ROS distro is
 
 Install necessary libraries:
 
-For Ubuntu 18.04 and ROS Melodic:
-```bash
-sudo apt install python-catkin-tools \
-libgoogle-glog-dev \
-ros-melodic-joy \
-ros-melodic-twist-mux \
-ros-melodic-interactive-marker-twist-server \
-ros-melodic-octomap-ros
-```
 For Ubuntu 20.04 and ROS Noetic:
 ```bash
 
@@ -45,14 +36,6 @@ Build:
 catkin config -DCMAKE_BUILD_TYPE=Release
 catkin build
 ```
-
-## Running Planner Demo 
-### Aerial Robot Demo
-Download the gazebo model from [here](https://drive.google.com/file/d/1Mx_JKNyx2MEwn56LM5KyP8Z3FM-4I6OS/view?usp=sharing) and extract in the `~/.gazebo/models` folder.
-```bash
-roslaunch gbplanner rmf_sim.launch
-```
-It will take few moments to load the world. A message saying the spawn_rmf_obelix process has died may pop up, but as long as the pointcloud map is visible in rviz and the UI controls work this message can be safely ignored.
 
 ### Ground Robot Demo
 the following command:

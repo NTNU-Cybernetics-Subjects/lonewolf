@@ -10,15 +10,6 @@ These instructions assume that ROS desktop-full of the appropriate ROS distro is
 
 Install necessary libraries:
 
-For Ubuntu 18.04 and ROS Melodic:
-```bash
-sudo apt install python-catkin-tools \
-libgoogle-glog-dev \
-ros-melodic-joy \
-ros-melodic-twist-mux \
-ros-melodic-interactive-marker-twist-server \
-ros-melodic-octomap-ros
-```
 For Ubuntu 20.04 and ROS Noetic:
 ```bash
 
