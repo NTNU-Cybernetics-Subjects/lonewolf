@@ -54,16 +54,10 @@
 
 # sim
 - git:
-    local-name: src/sim/rotors_simulator/
-    uri: git@github.com:ntnu-arl/rotors_simulator.git
-    version: dev/rmf_obelix
-- git:
     local-name: src/sim/lidar_simulator/
     uri: git@github.com:ntnu-arl/lidar_simulator.git
     version: psuedo_bpearl
-- git:
-    local-name: src/sim/smb_simulator/
-    uri: git@github.com:ntnu-arl/smb_simulator.git
+
 - git:
     local-name: src/sim/subt_cave_sim/
     uri: git@github.com:ntnu-arl/subt_cave_sim.git

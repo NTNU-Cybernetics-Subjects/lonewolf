@@ -22,7 +22,7 @@ src/misc/yaml_cpp_catkin/
 src/mapping/voxblox/
 src/exploration/pci_general/
 src/exploration/adaptive_obb_ros/
-src/sim/rotors_simulator/
+
 src/sim/lidar_simulator/
-src/sim/smb_simulator/
+
 src/sim/subt_cave_sim/
