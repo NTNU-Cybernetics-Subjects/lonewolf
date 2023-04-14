@@ -38,8 +38,8 @@
 		</link>
 
 		<gazebo reference="${wheel_prefix}_WHEEL_LINK">
-			<mu1 value="100000000000.0"/>
-			<mu2 value="100000000000.0"/>
+			<mu1 value="100000000000.0"/> <!-- Andreas endret fra 1 til xx -->
+			<mu2 value="100000000000.0"/> <!-- Andreas endret fra 1 til xx -->
 			<kp value="10000000.0" />
 			<kd value="1.0" />
 			<fdir1 value="1 0 0"/>
