@@ -10,7 +10,7 @@
     <xacro:property name="backWheelX" value="-0.75"/>
     <xacro:property name="wheelClearance" value="0.02"/>
     <xacro:property name="wheelHeight" value="0.425"/>
-    <xacro:property name="wheelMass" value="0.5"/>
+    <xacro:property name="wheelMass" value="10.0"/>
 
 	<xacro:macro name="smb_wheel" params="wheel_prefix *joint_pose">
 		<link name="${wheel_prefix}_WHEEL_LINK">
@@ -20,7 +20,7 @@
 				<xacro:cylinder_inertia m="${wheelMass}" r="${wheelRadius}" h="${wheelWidth}"/>
 			</inertial>
 			<visual>
-				<origin xyz="0 0 0" rpy="0 0 0" />
+				<origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
 				<geometry>
 					<!-- <mesh filename="package://smb_description/meshes/${wheel_prefix}_wheel.stl" scale="0.001 0.001 0.001"/> -->
 					<cylinder length="${wheelWidth}" radius="${wheelRadius}"/>
