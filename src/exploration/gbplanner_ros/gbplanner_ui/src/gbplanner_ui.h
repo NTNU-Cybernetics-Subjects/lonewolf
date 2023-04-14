@@ -64,7 +64,7 @@ class gbplanner_panel : public rviz::Panel {
   QLineEdit* global_id_line_edit;
   ros::ServiceClient planner_client_global_planner;
 
-  // adding viapoint button
+  // TODO: adding viapoint button
   QPushButton *button_plan_via_waypoints;
   ros::ServiceClient planner_client_plan_via_waypoints;
 

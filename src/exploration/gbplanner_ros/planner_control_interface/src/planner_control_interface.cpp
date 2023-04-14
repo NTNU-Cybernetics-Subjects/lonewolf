@@ -158,7 +158,8 @@ PlannerControlInterface::PlannerControlInterface(
   ROS_WARN_COND(global_verbosity >= Verbosity::WARN,
                 "[PCI]: Starting run() loop");
   run();
-}
+  
+} // end PlannerControlInterface()
 
 void PlannerControlInterface::poseGoalCallback(
     const geometry_msgs::PoseStamped& pose_msgs) {

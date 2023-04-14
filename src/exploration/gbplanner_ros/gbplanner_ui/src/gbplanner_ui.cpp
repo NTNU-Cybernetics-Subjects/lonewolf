@@ -80,7 +80,7 @@ gbplanner_panel::gbplanner_panel(QWidget* parent) : rviz::Panel(parent) {
   connect(button_global_planner, SIGNAL(clicked()), this,
           SLOT(on_global_planner_click()));
   
-  // FIXME: add action on click
+  // TODO: add action on click
   connect(button_plan_via_waypoints, SIGNAL(clicked()), this,
           SLOT(on_plan_via_waypoints()));
 
