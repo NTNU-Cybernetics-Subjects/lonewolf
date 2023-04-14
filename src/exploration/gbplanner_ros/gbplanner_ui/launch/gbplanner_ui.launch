@@ -4,5 +4,7 @@
     <param name="stop_planner_service_name"  value="/gbplanner_stop"/>
     <param name="homing_service_name"  value="/gbplanner_homing"/>
     <param name="global_planner_service_name"  value="/gbplanner_global"/>
+    <!-- TODO: trying to add viapoint serveice -->
+    <!-- <param name="viapoint_service_name"  value="/gbplanner_viapoint"/> -->
   </node>
 </launch>

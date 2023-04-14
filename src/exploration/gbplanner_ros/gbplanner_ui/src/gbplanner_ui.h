@@ -39,6 +39,9 @@ class gbplanner_panel : public rviz::Panel {
   void on_init_motion_click();
   void on_plan_to_waypoint_click();
   void on_global_planner_click();
+  // TODO: adding viapoint button
+  void on_plan_via_waypoints();
+
  protected Q_SLOTS:
 
  protected:
@@ -60,6 +63,10 @@ class gbplanner_panel : public rviz::Panel {
   QPushButton* button_global_planner;
   QLineEdit* global_id_line_edit;
   ros::ServiceClient planner_client_global_planner;
+
+  // adding viapoint button
+  QPushButton *button_plan_via_waypoints;
+  ros::ServiceClient planner_client_plan_via_waypoints;
 
   ros::NodeHandle nh;
 };

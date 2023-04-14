@@ -1,0 +1,36 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/opt/ros/noetic/include/**",
+        "/home/hurodor/home/bachelor/lonewolf/src/exploration/adaptive_obb_ros/adaptive_obb/include/**",
+        "/home/hurodor/home/bachelor/lonewolf/src/misc/eigen_checks/include/**",
+        "/home/hurodor/home/bachelor/lonewolf/src/exploration/gbplanner_ros/gbplanner/include/**",
+        "/home/hurodor/home/bachelor/lonewolf/src/exploration/gbplanner_ros/kdtree/include/**",
+        "/home/hurodor/home/bachelor/lonewolf/src/sim/lidar_simulator/lidar_gazebo_plugins/include/**",
+        "/home/hurodor/home/bachelor/lonewolf/src/misc/mav_comm/mav_msgs/include/**",
+        "/home/hurodor/home/bachelor/lonewolf/src/misc/mav_comm/mav_planning_msgs/include/**",
+        "/home/hurodor/home/bachelor/lonewolf/src/misc/minkindr/minkindr/include/**",
+        "/home/hurodor/home/bachelor/lonewolf/src/misc/minkindr_ros/minkindr_conversions/include/**",
+        "/home/hurodor/home/bachelor/lonewolf/src/exploration/pci_general/include/**",
+        "/home/hurodor/home/bachelor/lonewolf/src/exploration/gbplanner_ros/planner_common/include/**",
+        "/home/hurodor/home/bachelor/lonewolf/src/exploration/gbplanner_ros/planner_control_interface/include/**",
+        "/home/hurodor/home/bachelor/lonewolf/src/sim/smb_simulator/smb_path_tracker/include/**",
+        "/home/hurodor/home/bachelor/lonewolf/src/mapping/voxblox/voxblox/include/**",
+        "/home/hurodor/home/bachelor/lonewolf/src/mapping/voxblox/voxblox_ros/include/**",
+        "/home/hurodor/home/bachelor/lonewolf/src/mapping/voxblox/voxblox_rviz_plugin/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

@@ -17,6 +17,10 @@ gbplanner_panel::gbplanner_panel(QWidget* parent) : rviz::Panel(parent) {
   planner_client_global_planner =
       nh.serviceClient<planner_msgs::pci_global>("pci_global");
 
+    // TODO: viapoint service not added here.
+  
+  planner_client_plan_via_waypoints = nh.serviceClient<std_srvs::Trigger>("/this_is_a_test");
+
   QVBoxLayout* v_box_layout = new QVBoxLayout;
 
   button_start_planner = new QPushButton;
@@ -26,6 +30,9 @@ gbplanner_panel::gbplanner_panel(QWidget* parent) : rviz::Panel(parent) {
   button_plan_to_waypoint = new QPushButton;
   button_global_planner = new QPushButton;
 
+  // TODO: trying to add viapoint button
+  button_plan_via_waypoints = new QPushButton;
+
   button_start_planner->setText("Start Planner");
   button_stop_planner->setText("Stop Planner");
   button_homing->setText("Go Home");
@@ -33,11 +40,18 @@ gbplanner_panel::gbplanner_panel(QWidget* parent) : rviz::Panel(parent) {
   button_plan_to_waypoint->setText("Plan to Waypoint");
   button_global_planner->setText("Run Global");
 
+  // TODO: viapoint button texts
+  button_plan_via_waypoints->setText("plan using waypoints");
+
+
   v_box_layout->addWidget(button_start_planner);
   v_box_layout->addWidget(button_stop_planner);
   v_box_layout->addWidget(button_homing);
   v_box_layout->addWidget(button_init_motion);
   v_box_layout->addWidget(button_plan_to_waypoint);
+
+  // TODO: viapoint button widget
+  v_box_layout->addWidget(button_plan_via_waypoints);
 
   QVBoxLayout* global_vbox_layout = new QVBoxLayout;
   QHBoxLayout* global_hbox_layout = new QHBoxLayout;
@@ -65,7 +79,12 @@ gbplanner_panel::gbplanner_panel(QWidget* parent) : rviz::Panel(parent) {
           SLOT(on_plan_to_waypoint_click()));
   connect(button_global_planner, SIGNAL(clicked()), this,
           SLOT(on_global_planner_click()));
-}
+  
+  // FIXME: add action on click
+  connect(button_plan_via_waypoints, SIGNAL(clicked()), this,
+          SLOT(on_plan_via_waypoints()));
+
+} // end gbplanner_panel()
 
 void gbplanner_panel::on_start_planner_click() {
   std_srvs::Trigger srv;
@@ -106,6 +125,13 @@ void gbplanner_panel::on_plan_to_waypoint_click() {
               planner_client_plan_to_waypoint.getService().c_str());
   }
 }
+
+// viapoint
+void gbplanner_panel::on_plan_via_waypoints(){
+    // FIXME: implement
+    ROS_INFO("[GBPLANNER-UI] You clikced viapoint button");
+}
+
 
 void gbplanner_panel::on_global_planner_click() {
   // retrieve ID as a string
