@@ -9,7 +9,7 @@
 	<xacro:property name="chassisHeight" value="1.26"/>
 	<xacro:property name="chassisLength" value="2.184"/>
 	<xacro:property name="chassisWidth" value="1.168"/>
-	<xacro:property name="chassisMass" value="200.0"/>
+	<xacro:property name="chassisMass" value="300.0"/>
 
 	<!-- Included URDF/XACRO Files -->
 	<xacro:include filename="$(find smb_description)/urdf/wheel.urdf.xacro" />
