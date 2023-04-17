@@ -33,8 +33,8 @@ gbplanner_panel::gbplanner_panel(QWidget* parent) : rviz::Panel(parent) {
   // TODO: trying to add viapoint button
   button_plan_via_waypoints = new QPushButton;
 
-  button_start_planner->setText("Start Planner");
-  button_stop_planner->setText("Stop Planner");
+  button_start_planner->setText("Start Explorer");
+  button_stop_planner->setText("Stop");
   button_homing->setText("Go Home");
   button_init_motion->setText("Initialization");
   button_plan_to_waypoint->setText("Plan to Waypoint");
