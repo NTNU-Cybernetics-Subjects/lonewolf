@@ -18,8 +18,8 @@ gbplanner_panel::gbplanner_panel(QWidget* parent) : rviz::Panel(parent) {
       nh.serviceClient<planner_msgs::pci_global>("pci_global");
 
     // TODO: viapoint service not added here.
-  
-  planner_client_plan_via_waypoints = nh.serviceClient<std_srvs::Trigger>("/this_is_a_test");
+  planner_client_plan_via_waypoints = nh.serviceClient<std_srvs::Trigger>(
+    "/planner_control_interface/std_srvs/go_via_waypoints");
 
   QVBoxLayout* v_box_layout = new QVBoxLayout;
 
@@ -126,10 +126,14 @@ void gbplanner_panel::on_plan_to_waypoint_click() {
   }
 }
 
-// viapoint
+// TODO: viapoints on press button
 void gbplanner_panel::on_plan_via_waypoints(){
     // FIXME: implement
-    ROS_INFO("[GBPLANNER-UI] You clikced viapoint button");
+    std_srvs::Trigger srv;
+    if (!planner_client_plan_via_waypoints.call(srv)){
+        ROS_ERROR("[GBPLANNER-UI] Service call failed: %s", 
+                planner_client_plan_via_waypoints.getService().c_str());
+    }
 }
 
 
