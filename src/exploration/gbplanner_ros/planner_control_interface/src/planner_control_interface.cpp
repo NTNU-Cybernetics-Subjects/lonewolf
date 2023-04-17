@@ -37,6 +37,7 @@ PlannerControlInterface::PlannerControlInterface(
   pci_std_homing_server_ = nh_.advertiseService(
       "planner_control_interface/std_srvs/homing_trigger",
       &PlannerControlInterface::stdSrvHomingCallback, this);
+
   pci_std_go_to_waypoint_server_ = nh_.advertiseService(
       "planner_control_interface/std_srvs/go_to_waypoint",
       &PlannerControlInterface::stdSrvGoToWaypointCallback, this);
@@ -135,6 +136,11 @@ PlannerControlInterface::PlannerControlInterface(
   nav_goal_sub_ =
       nh_.subscribe("/move_base_simple/goal", 1,
                     &PlannerControlInterface::navGoalCallback, this);
+
+    // TODO: subscribe to publish points
+    published_point_sub = nh_.subscribe("/clicked_point", 5, 
+            &PlannerControlInterface::publishedPointCallback, this);
+
   pose_goal_sub_ =
       nh_.subscribe("/global_planner/waypoint_request", 1,
                     &PlannerControlInterface::poseGoalCallback, this);
@@ -178,6 +184,30 @@ void PlannerControlInterface::navGoalCallback(
   posest.header = nav_msgs.header;
   posest.pose = nav_msgs.pose;
   setGoal(posest);
+}
+
+//TODO: published point subscription callback
+void PlannerControlInterface::publishedPointCallback(
+    const geometry_msgs::PointStamped& point_msg){
+        geometry_msgs::PoseStamped posest;
+        posest.header = point_msg.header;
+        
+        // ROS_INFO("[gbplanner_pci::clicked_point] Registred click on point (x: %.2f, y: %.2f, z: %2.f) ", 
+        // point_msg.point.x, 
+        // point_msg.point.y, 
+        // point_msg.point.z);
+        
+        posest.pose.position.x = point_msg.point.x;
+        posest.pose.position.y = point_msg.point.y;
+        posest.pose.position.z = point_msg.point.z;
+        posest.pose.orientation.x = 0.0;
+        posest.pose.orientation.y = 0.0;
+        posest.pose.orientation.z = 1.0;
+        posest.pose.orientation.w = 0.0;
+        
+        waypoint_list_.push_back(posest);
+        // FIXME: need visualization of point in rviz
+        // setGoal(posest);
 }
 
 void PlannerControlInterface::setGoal(const geometry_msgs::PoseStamped& pose) {
@@ -239,6 +269,9 @@ void PlannerControlInterface::resetPlanner() {
   global_request_ = false;
   go_to_waypoint_request_ = false;
   go_to_waypoint_with_checking_ = false;
+
+    //TODO: clear waypoint list on stop planner
+    waypoint_list_.clear();
 
   // Remove the last waypoint to prevent the planner starts from that last wp.
   current_path_.clear();
@@ -469,7 +502,18 @@ bool PlannerControlInterface::stdSrvGoToWaypointCallback(
 // TODO: define waypoint callback from planner controll interface.
 bool PlannerControlInterface::stdSrvGoViaWapointsCallback(
     std_srvs::Trigger::Request& req, std_srvs::Trigger::Response& res) {
-    ROS_INFO("Your click request made it to plannerControlInterface");
+
+    // ROS_INFO("Your click request made it to plannerControlInterface");
+    if (waypoint_list_.size() > 0) {
+        for (auto pose: waypoint_list_){
+            ROS_INFO("[PCI_server::goViaPoints] point nr: %.2d : (%.2f, %.2f, %.2f)", 
+            pose.header.seq, 
+            pose.pose.position.x, 
+            pose.pose.position.y, 
+            pose.pose.position.z);
+        }
+        waypoint_list_.clear();
+    }
 
   return true;
 }
@@ -574,6 +618,7 @@ void PlannerControlInterface::run() {
                       "PCI: run: stop requested");
         stop_planner_request_ = false;
         pci_manager_->goToWaypoint(current_pose_);
+
       } else if ((trigger_mode_ == PlannerTriggerModeType::kAuto) ||
                  (run_en_)) {
         run_en_ = false;
@@ -584,19 +629,23 @@ void PlannerControlInterface::run() {
                                       : "kManual")
                           .c_str());
         runPlanner(exe_path_en_);
+
       } else if (search_request_) {
         search_request_ = false;
         ROS_INFO_COND(global_verbosity >= Verbosity::INFO,
                       "Request the planner to search for connection path.");
         runSearch(exe_path_en_);
+
       } else if (global_request_) {
         global_request_ = false;
         ROS_INFO_COND(global_verbosity >= Verbosity::INFO,
                       "Request the global planner.");
         runGlobalPlanner(exe_path_en_);
+
       } else if (passing_gate_request_) {
         passing_gate_request_ = false;
         runPassingGate();
+
       } else if (go_to_waypoint_request_) {
         go_to_waypoint_request_ = false;
         if (!go_to_waypoint_with_checking_)

@@ -15,6 +15,8 @@
 #include <tf/transform_listener.h>
 #include <visualization_msgs/Marker.h>
 
+#include <vector>
+
 #include "planner_control_interface/pci_manager.h"
 #include "planner_msgs/BoundMode.h"
 #include "planner_msgs/ExecutionPathMode.h"
@@ -56,6 +58,7 @@ class PlannerControlInterface {
     kAuto = 1     // Automatic exploration.
   };
 
+
   PlannerControlInterface(ros::NodeHandle& nh, ros::NodeHandle& nh_private,
                           std::shared_ptr<PCIManager> pci_manager);
 
@@ -71,6 +74,10 @@ class PlannerControlInterface {
   ros::Subscriber pose_sub_;
   ros::Subscriber pose_stamped_sub_;
   ros::Subscriber nav_goal_sub_;
+  
+  //TODO: subscribe to publish points
+  ros::Subscriber published_point_sub;
+
   ros::Subscriber pose_goal_sub_;
   ros::ServiceClient planner_client_;
   ros::ServiceClient planner_homing_client_;
@@ -129,6 +136,9 @@ class PlannerControlInterface {
   // Visualization Publisher
   ros::Publisher go_to_waypoint_visualization_pub_;
 
+  // TODO: store all clicked points in a list, 
+    std::vector<geometry_msgs::PoseStamped> waypoint_list_;
+
   bool go_to_waypoint_request_;
   bool go_to_waypoint_with_checking_;
   bool received_first_waypoint_to_go_ = false;
@@ -171,6 +181,10 @@ class PlannerControlInterface {
   void odometryCallback(const nav_msgs::Odometry& odo);
   void poseCallback(const geometry_msgs::PoseWithCovarianceStamped& pose);
   void navGoalCallback(const geometry_msgs::PoseStamped& nav_msg);
+
+    // TODO: callback on published point subscription
+    void publishedPointCallback(const geometry_msgs::PointStamped& point_msg);
+
   void poseGoalCallback(const geometry_msgs::PoseStamped& pose_msg);
   void setGoal(const geometry_msgs::PoseStamped& pose);
   void poseStampedCallback(const geometry_msgs::PoseStamped& pose);
