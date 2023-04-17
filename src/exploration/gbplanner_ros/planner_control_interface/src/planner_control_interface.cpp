@@ -208,6 +208,8 @@ void PlannerControlInterface::publishedPointCallback(
         waypoint_list_.push_back(posest);
         // FIXME: need visualization of point in rviz
         // setGoal(posest);
+        publishGoToWaypointVisualization(posest);
+
 }
 
 void PlannerControlInterface::setGoal(const geometry_msgs::PoseStamped& pose) {
@@ -511,6 +513,7 @@ bool PlannerControlInterface::stdSrvGoViaWapointsCallback(
             pose.pose.position.x, 
             pose.pose.position.y, 
             pose.pose.position.z);
+
         }
         waypoint_list_.clear();
     }
@@ -847,13 +850,13 @@ void PlannerControlInterface::publishGoToWaypointVisualization(
   marker.header.frame_id = poseStamped.header.frame_id;
   marker.header.stamp = poseStamped.header.stamp;
   marker.id = 0;
-  marker.type = visualization_msgs::Marker::ARROW;
+  marker.type = visualization_msgs::Marker::CUBE; //Andreas
   marker.action = visualization_msgs::Marker::ADD;
   marker.pose = poseStamped.pose;
   marker.pose.position.z += 0.5;
-  marker.scale.x = 4.0;
-  marker.scale.y = 0.45;
-  marker.scale.z = 0.45;
+  marker.scale.x = 0.5; //Andreas: var 4
+  marker.scale.y = 0.5; //Andreas: var 0.45
+  marker.scale.z = 0.5; //Andreas: var 0.45
   marker.color.a = 1.0;
   marker.color.r = 0.0;
   marker.color.g = 0.0;
