@@ -96,6 +96,10 @@ class PlannerControlInterface {
   ros::ServiceServer pci_stop_server_;
   ros::ServiceServer pci_std_stop_server_;
   ros::ServiceServer pci_std_go_to_waypoint_server_;
+
+  // TODO: pci server for viapoints
+  ros::ServiceServer pci_std_go_via_waypoints_server_;
+
   ros::ServiceServer pci_geofence_server_;
   ros::ServiceServer pci_to_waypoint_server_;
   ros::ServiceServer pci_passing_gate_server_;
@@ -188,6 +192,11 @@ class PlannerControlInterface {
 
   bool stdSrvGoToWaypointCallback(std_srvs::Trigger::Request& req,
                                   std_srvs::Trigger::Response& res);
+
+// TODO: declare waypoint callback
+  bool stdSrvGoViaWapointsCallback(std_srvs::Trigger::Request& req,
+                                  std_srvs::Trigger::Response& res);
+
 
   bool stdSrvsSinglePlanningCallback(std_srvs::Trigger::Request& req,
                                      std_srvs::Trigger::Response& res);

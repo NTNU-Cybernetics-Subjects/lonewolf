@@ -40,6 +40,12 @@ PlannerControlInterface::PlannerControlInterface(
   pci_std_go_to_waypoint_server_ = nh_.advertiseService(
       "planner_control_interface/std_srvs/go_to_waypoint",
       &PlannerControlInterface::stdSrvGoToWaypointCallback, this);
+
+// TODO: pci server for viapoints
+    pci_std_go_via_waypoints_server_ = nh_.advertiseService(
+        "/planner_control_interface/std_srvs/go_via_waypoints",
+        &PlannerControlInterface::stdSrvGoViaWapointsCallback, this);
+
   pci_initialization_server_ = nh_.advertiseService(
       "pci_initialization_trigger",
       &PlannerControlInterface::initializationCallback, this);
@@ -457,6 +463,14 @@ bool PlannerControlInterface::stdSrvGoToWaypointCallback(
         "No waypoint was set, 'go_to_waypoint' feature will not be triggered.");
     res.success = false;
   }
+  return true;
+}
+
+// TODO: define waypoint callback from planner controll interface.
+bool PlannerControlInterface::stdSrvGoViaWapointsCallback(
+    std_srvs::Trigger::Request& req, std_srvs::Trigger::Response& res) {
+    ROS_INFO("Your click request made it to plannerControlInterface");
+
   return true;
 }
 
