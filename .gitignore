@@ -27,3 +27,4 @@ src/sim/lidar_simulator/
 
 src/sim/subt_cave_sim/
 src/.vscode
+rosprintouts
