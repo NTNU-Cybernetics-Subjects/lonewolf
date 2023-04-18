@@ -66,11 +66,12 @@ void Gbplanner::initializeAttributes() {
   planner_goto_wp_service_ =
       nh_.advertiseService("gbplanner/go_to_waypoint",
                            &Gbplanner::plannerGotoWaypointCallback, this);
-    
-// TODO: go via waypoints server:
-    // planner_go_via_waypoints_service_ = nh_.advertiseService("gbplanner/go_via_waypoints", 
-    // &Gbplanner::plannerGoViaWaypointsCallback, this);
   
+    // TODO: service for retriving global path from rrg
+    planner_globalPath_viapoints_server_ = 
+        nh_.advertiseService("gbplanner/get_path_viapoints",
+                                &Gbplanner::plannerGetViaPointPathCallback, this);
+
   planner_enable_untraversable_polygon_subscriber_service_ =
       nh_.advertiseService(
           "gbplanner/enable_untraversable_polygon_subscriber",
@@ -100,12 +101,18 @@ bool Gbplanner::plannerGotoWaypointCallback(
   res.path = rrg_->getGlobalPath(req.waypoint);
   return true;
 }
+// TODO: callback when requesting global path using viapoints
+bool Gbplanner::plannerGetViaPointPathCallback(
+    planner_msgs::planner_getPath_viapoints::Request &req,
+    planner_msgs::planner_getPath_viapoints::Response &res) {
 
-// TODO: viapoints callback service FIXME: add callback function
-// bool Gbplanner::plannerGoViaWaypointsCallback(){
-    
-//     return true;
-// }
+        res.path.clear();
+        ROS_INFO("[Planner] request made it to gbplanner");
+        res.path = rrg_->getGlobalPathViapoints(req.waypoints);
+
+        return true;
+}
+
 
 
 bool Gbplanner::plannerEnableUntraversablePolygonSubscriberCallback(

@@ -140,12 +140,16 @@ PlannerControlInterface::PlannerControlInterface(
     // TODO: subscribe to publish points
     published_point_sub = nh_.subscribe("/clicked_point", 5, 
             &PlannerControlInterface::publishedPointCallback, this);
+    // TODO: service client to request global path using viapoints. sends to gbplanner.
+    planner_get_global_path_viapoints_client_ = nh_.serviceClient<planner_msgs::planner_getPath_viapoints>(
+        "gbplanner/get_path_viapoints");
 
   pose_goal_sub_ =
       nh_.subscribe("/global_planner/waypoint_request", 1,
                     &PlannerControlInterface::poseGoalCallback, this);
   nav_goal_client_ = nh_.serviceClient<planner_msgs::planner_go_to_waypoint>(
       "gbplanner/go_to_waypoint");
+    
   go_to_waypoint_visualization_pub_ = nh_.advertise<visualization_msgs::Marker>(
       "gbplanner/go_to_waypoint_pose_visualization", 0);
 
@@ -186,7 +190,7 @@ void PlannerControlInterface::navGoalCallback(
   setGoal(posest);
 }
 
-//TODO: published point subscription callback
+// TODO: published point subscription callback
 void PlannerControlInterface::publishedPointCallback(
     const geometry_msgs::PointStamped& point_msg){
         geometry_msgs::PoseStamped posest;
@@ -499,7 +503,7 @@ bool PlannerControlInterface::stdSrvGoToWaypointCallback(
   return true;
 }
 
-// TODO: define waypoint callback from planner controll interface.
+// TODO: define waypoint callback this is called when button clikced in rviz
 bool PlannerControlInterface::stdSrvGoViaWapointsCallback(
     std_srvs::Trigger::Request& req, std_srvs::Trigger::Response& res) {
 
@@ -512,8 +516,15 @@ bool PlannerControlInterface::stdSrvGoViaWapointsCallback(
             pose.pose.position.y, 
             pose.pose.position.z);
         }
+        // FIXME: This should set a flag in RUN function and call function below there
+        getGlobalPathViapoints();
+        
         waypoint_list_.clear();
     }
+    else {
+        ROS_INFO("[PCI_servver::goViaPoints] waypoint list empty.");
+    }
+
 
 
   return true;
@@ -651,8 +662,8 @@ void PlannerControlInterface::run() {
         go_to_waypoint_request_ = false;
         if (!go_to_waypoint_with_checking_)
           pci_manager_->goToWaypoint(set_waypoint_);
-        else
-          runGlobalRepositioning();
+        else runGlobalRepositioning();
+      
       }
     } else if (pci_status == PCIManager::PCIStatus::kError) {
       // For ANYmal, reset everything to manual then wait for operator.
@@ -697,6 +708,40 @@ void PlannerControlInterface::runGlobalRepositioning() {
     ros::Duration(0.5).sleep();
   }
 }
+
+// TODO: Get Global Path using viapoints. sends request to gbplanner
+void PlannerControlInterface::getGlobalPathViapoints(){
+    // FIXME: Add request to gbplanner to get global path using waypoint_list_
+    ROS_INFO("[PCI::getGlobalPathViapoints] requesting global path using viapoints from gbplanner");
+
+    // requesting maunel planning mode
+    planner_msgs::planner_set_planning_mode planning_mode_srv;
+    planning_mode_srv.request.planning_mode =
+        planner_msgs::planner_set_planning_mode::Request::kManual;
+    planner_set_trigger_mode_client_.call(planning_mode_srv);
+
+    // requesting globalPath. sending waypoints_list_ to gbplanner
+    planner_msgs::planner_getPath_viapoints planner_srv;
+    planner_srv.request.check_collision = true;
+    planner_srv.request.waypoints = waypoint_list_;
+
+    if (planner_get_global_path_viapoints_client_.call(planner_srv)){
+        if (!planner_srv.response.path.empty()){
+            ROS_INFO("[PCI::getGlobalPathViapoints] Got path from planner");
+
+        }
+        else {
+            ROS_WARN_THROTTLE(1, "[PCI::getGlobalPathViapoints] Did not get path from planner");
+            ros::Duration(0.5).sleep();
+        }
+        // planner_iteration_++; //runGlobalRepositioning are using this
+    }
+    else {
+        ROS_WARN_THROTTLE(1, "[PCI::getGlobalPathViapoints] Planner service failed");
+        ros::Duration(0.5).sleep();
+    }
+}
+
 
 void PlannerControlInterface::runPassingGate() {
   bool success = true;
