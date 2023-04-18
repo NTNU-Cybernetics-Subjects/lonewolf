@@ -1,8 +1,6 @@
+<?xml version="1.0" ?>
 <sdf version='1.7'>
   <world name='default'>
-
-  <plugin name='ros_interface_plugin' filename='librotors_gazebo_ros_interface_plugin.so'/>
-
     <light name='sun' type='directional'>
       <cast_shadows>1</cast_shadows>
       <pose>0 0 10 0 -0 0</pose>
@@ -47,6 +45,9 @@
       <real_time>71 970918261</real_time>
       <wall_time>1678957650 29327432</wall_time>
       <iterations>71832</iterations>
+
+    <plugin name="ros_interface_plugin" filename="librotors_gazebo_ros_interface_plugin.so"/>
+
       <model name='maze_world'>
         <pose>-3.30995 -3.58323 0 0 -0 0</pose>
         <scale>1 1 1</scale>
@@ -55,7 +56,7 @@
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
-        </link>
+        </link>    
       </model>
       <light name='sun'>
         <pose>0 0 10 0 -0 0</pose>

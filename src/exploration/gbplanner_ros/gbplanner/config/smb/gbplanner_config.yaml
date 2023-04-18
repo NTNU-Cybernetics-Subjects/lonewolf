@@ -112,7 +112,7 @@ PlanningParams:
   rr_mode:          kGraph
   bound_mode:       kExtremeBound
   exp_sensor_list:  ["VLP16"]
-  no_gain_zones_list: ["g1"]
+  no_gain_zones_list: [""]
   edge_length_min:  0.1
   edge_length_max:  3.0
   edge_overshoot:   0.0 #m
@@ -147,7 +147,7 @@ PlanningParams:
   max_inclination: rad(25.0*pi/180)
   interpolate_projection_distance: false
   
-  yaw_tangent_correction: true
+  yaw_tangent_correction: false
   traverse_length_max: 6.0
   traverse_time_max: 40.0
   path_safety_enhance_enable: true
@@ -168,14 +168,14 @@ AdaptiveObbParams:
   local_pointcloud_range: 50.0
   bounding_box_size_max: 35
 
-GeofenceParams:
-  AreaList: ["GLeft", "GBack", "GRight"]
-  GBack:
-    center: [-3.0, 0.0, 0.0]
-    size:   [2.0, 6.0, 0.0]
-  GLeft:
-    center: [0.0, 4.0, 0.0]
-    size:   [6.0, 2.0, 0.0]
-  GRight:
-    center: [0.0, -4.0, 0.0]
-    size:   [6.0, 2.0, 0.0]
+# GeofenceParams:
+#   AreaList: ["GLeft", "GBack", "GRight"]
+#   GBack:
+#     center: [-3.0, 0.0, 0.0]
+#     size:   [2.0, 6.0, 0.0]
+#   GLeft:
+#     center: [0.0, 4.0, 0.0]
+#     size:   [6.0, 2.0, 0.0]
+#   GRight:
+#     center: [0.0, -4.0, 0.0]
+#     size:   [6.0, 2.0, 0.0]
