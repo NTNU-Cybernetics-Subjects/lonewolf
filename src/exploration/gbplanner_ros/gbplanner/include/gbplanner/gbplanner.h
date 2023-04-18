@@ -69,6 +69,10 @@ class Gbplanner {
   ros::ServiceServer planner_load_graph_service_;
   ros::ServiceServer planner_save_graph_service_;
   ros::ServiceServer planner_goto_wp_service_;
+
+  // TODO: go to waypointsService
+//   ros::ServiceServer planner_go_via_waypoints_service_;
+
   ros::ServiceServer planner_enable_untraversable_polygon_subscriber_service_;
   ros::ServiceServer planner_set_planning_trigger_mode_service_;
 
@@ -116,6 +120,9 @@ class Gbplanner {
   bool plannerGotoWaypointCallback(
       planner_msgs::planner_go_to_waypoint::Request& req,
       planner_msgs::planner_go_to_waypoint::Response& res);
+
+    // TODO: go via waypoints callback function
+    // bool plannerGoViaWaypointsCallback();
 
   bool plannerEnableUntraversablePolygonSubscriberCallback(
       std_srvs::SetBool::Request& request,

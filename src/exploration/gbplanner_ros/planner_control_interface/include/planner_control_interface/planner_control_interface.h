@@ -137,7 +137,9 @@ class PlannerControlInterface {
   ros::Publisher go_to_waypoint_visualization_pub_;
 
   // TODO: store all clicked points in a list, 
+  // FIXME: should mabye be list of pose?
     std::vector<geometry_msgs::PoseStamped> waypoint_list_;
+    bool go_via_points_request_;
 
   bool go_to_waypoint_request_;
   bool go_to_waypoint_with_checking_;

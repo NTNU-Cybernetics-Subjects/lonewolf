@@ -42,7 +42,7 @@ PlannerControlInterface::PlannerControlInterface(
       "planner_control_interface/std_srvs/go_to_waypoint",
       &PlannerControlInterface::stdSrvGoToWaypointCallback, this);
 
-// TODO: pci server for viapoints
+// TODO: pci std server for viapoints
     pci_std_go_via_waypoints_server_ = nh_.advertiseService(
         "/planner_control_interface/std_srvs/go_via_waypoints",
         &PlannerControlInterface::stdSrvGoViaWapointsCallback, this);
@@ -503,7 +503,7 @@ bool PlannerControlInterface::stdSrvGoToWaypointCallback(
 bool PlannerControlInterface::stdSrvGoViaWapointsCallback(
     std_srvs::Trigger::Request& req, std_srvs::Trigger::Response& res) {
 
-    // ROS_INFO("Your click request made it to plannerControlInterface");
+    // print out list of points
     if (waypoint_list_.size() > 0) {
         for (auto pose: waypoint_list_){
             ROS_INFO("[PCI_server::goViaPoints] point nr: %.2d : (%.2f, %.2f, %.2f)", 
@@ -514,6 +514,7 @@ bool PlannerControlInterface::stdSrvGoViaWapointsCallback(
         }
         waypoint_list_.clear();
     }
+
 
   return true;
 }

@@ -16,7 +16,8 @@ Gbplanner::Gbplanner(const ros::NodeHandle& nh,
   }
 
   initializeAttributes();
-}
+
+} // end Gbplanner()
 
 Gbplanner::Gbplanner(const ros::NodeHandle& nh,
                      const ros::NodeHandle& nh_private,
@@ -33,7 +34,8 @@ Gbplanner::Gbplanner(const ros::NodeHandle& nh,
   }
 
   initializeAttributes();
-}
+
+} // end Gbplanner()
 
 void Gbplanner::initializeAttributes() {
   planner_service_ = nh_.advertiseService(
@@ -64,6 +66,11 @@ void Gbplanner::initializeAttributes() {
   planner_goto_wp_service_ =
       nh_.advertiseService("gbplanner/go_to_waypoint",
                            &Gbplanner::plannerGotoWaypointCallback, this);
+    
+// TODO: go via waypoints server:
+    // planner_go_via_waypoints_service_ = nh_.advertiseService("gbplanner/go_via_waypoints", 
+    // &Gbplanner::plannerGoViaWaypointsCallback, this);
+  
   planner_enable_untraversable_polygon_subscriber_service_ =
       nh_.advertiseService(
           "gbplanner/enable_untraversable_polygon_subscriber",
@@ -85,6 +92,7 @@ void Gbplanner::initializeAttributes() {
                     &Gbplanner::untraversablePolygonCallback, this);
 }
 
+
 bool Gbplanner::plannerGotoWaypointCallback(
     planner_msgs::planner_go_to_waypoint::Request& req,
     planner_msgs::planner_go_to_waypoint::Response& res) {
@@ -92,6 +100,13 @@ bool Gbplanner::plannerGotoWaypointCallback(
   res.path = rrg_->getGlobalPath(req.waypoint);
   return true;
 }
+
+// TODO: viapoints callback service FIXME: add callback function
+// bool Gbplanner::plannerGoViaWaypointsCallback(){
+    
+//     return true;
+// }
+
 
 bool Gbplanner::plannerEnableUntraversablePolygonSubscriberCallback(
     std_srvs::SetBool::Request& request,
