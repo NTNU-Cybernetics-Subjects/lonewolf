@@ -41,7 +41,7 @@ gbplanner_panel::gbplanner_panel(QWidget* parent) : rviz::Panel(parent) {
   button_global_planner->setText("Run Global");
 
   // TODO: viapoint button texts
-  button_plan_via_waypoints->setText("plan using waypoints");
+  button_plan_via_waypoints->setText("Plan using Viapoints");
 
 
   v_box_layout->addWidget(button_start_planner);
