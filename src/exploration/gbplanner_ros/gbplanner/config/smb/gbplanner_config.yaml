@@ -1,6 +1,6 @@
 RobotParams:
   type:               kGroundRobot
-  size:               [2.184, 1.168, 1.26] # Actual size of the robot in meters [x, y, z] # Andreas [x=l,y=b,z=h] Var 0.8 0.8 0.2
+  size:               [0.8, 0.8, 0.2] # Actual size of the robot in meters [x, y, z] # Andreas [x=l,y=b,z=h] Var [0.8, 0.8, 0.2] ATV: [2.184, 1.168, 1.26]
   size_extension_min: [0.0, 0.0, 0.0] # minimum extension outside of robot size allowed to operate
   size_extension:     [0.2, 0.2, 0.2] # maximum extension outside of the robot size
   center_offset:      [0.0, 0.0, 0.0]
@@ -143,8 +143,8 @@ PlanningParams:
   clustering_radius: 0.5
   
   max_ground_height: 0.7 # All points will be projected to this height from ground # Andreas: var 0.7
-  robot_height: 1.26  # Height of robot's base frame from ground # Andreas: var 0.6
-  max_inclination: rad(45.0*pi/180) #Andreas var 25
+  robot_height: 0.6  # Height of robot's base frame from ground # Andreas: var 0.6
+  max_inclination: rad(25.0*pi/180) #Andreas var 25
   interpolate_projection_distance: false
   
   yaw_tangent_correction: true
