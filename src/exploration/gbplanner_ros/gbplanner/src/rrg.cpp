@@ -3489,7 +3489,11 @@ std::vector<geometry_msgs::Pose> Rrg::getGlobalPathViapoints(
             // cur_pose.pose.orientation.y = 0.0;
             // cur_pose.pose.orientation.z = 1.0;
             // cur_pose.pose.orientation.w = 0.0;
-            ret_path = getGlobalPathFromAtoB(cur_pose, viapoints.at(0));
+
+            // FIXME: Use getGlobalPath function to do first path because this uses current pose to start,
+            // getGlobalPathFromAtoB should be optimilized to evaluate startPose
+            // and endPose.
+            ret_path = getGlobalPath(viapoints.at(0));
             
             // caluclate thorugh all viapoints, only if there are two points or more
             if (viapoints.size() > 1){
@@ -3512,12 +3516,13 @@ std::vector<geometry_msgs::Pose> Rrg::getGlobalPathFromAtoB(
   std::vector<geometry_msgs::Pose> ret_path;
 
   if (global_graph_->getNumVertices() <= 1) {
-    ROS_WARN_COND(global_verbosity >= Verbosity::WARN, "[GlobalGraph] Graph is empty, nothing to search for homing.");
+    ROS_WARN_COND(global_verbosity >= Verbosity::WARN, "[GlobalGraph] Graph is empty, nothing to search in.");
     return ret_path;
   }
+
     // StateVec(x,y,z,yaw)
   StateVec cur_state;
-  // FIXME: Dont know what yaw should be.
+  // FIXME: Dont know what yaw should be. mabye store and use yaw correctio below.
   cur_state << fromPose.pose.position.x, fromPose.pose.position.y, fromPose.pose.position.z,
       current_state_[3];
 
@@ -3525,13 +3530,15 @@ std::vector<geometry_msgs::Pose> Rrg::getGlobalPathFromAtoB(
   wp << toPose.pose.position.x, toPose.pose.position.y,
       toPose.pose.position.z;
 
-    // FIXME: mabye we need to find nearest vertex to start position aswell
-  Vertex* wp_nearest_vertex;
+    // Checking endpoint
+  Vertex* wp_nearest_vertex = NULL;
   if (!global_graph_->getNearestVertex(&wp, &wp_nearest_vertex)) {
-    ROS_WARN_COND(global_verbosity >= Verbosity::WARN, "Cannot find any nearby vertex to reposition.");
+    ROS_WARN_COND(global_verbosity >= Verbosity::WARN, "Cannot find any nearby vertex to end point.");
     return ret_path;
+
   } else if (wp_nearest_vertex == NULL) {
     return ret_path;
+
   } else {
     Eigen::Vector3d diff(wp_nearest_vertex->state.x() - wp.x(),
                          wp_nearest_vertex->state.y() - wp.y(),
@@ -3553,10 +3560,33 @@ std::vector<geometry_msgs::Pose> Rrg::getGlobalPathFromAtoB(
       cur_state(2) -= (ground_height - planning_params_.max_ground_height);
     }
   }
-  Vertex* nearest_vertex = NULL;
-  if (!global_graph_->getNearestVertex(&cur_state, &nearest_vertex))
+//   Vertex* nearest_vertex = NULL;
+//   if (!global_graph_->getNearestVertex(&cur_state, &nearest_vertex))
+//     return ret_path;
+//   if (nearest_vertex == NULL) return ret_path;
+    
+    // Checking start point
+    Vertex* nearest_vertex = NULL;
+  if (!global_graph_->getNearestVertex(&cur_state, &nearest_vertex)) {
+    ROS_WARN_COND(global_verbosity >= Verbosity::WARN, "Cannot find any nearby vertex to start point");
     return ret_path;
-  if (nearest_vertex == NULL) return ret_path;
+
+  } else if (wp_nearest_vertex == NULL) {
+    return ret_path;
+
+  } else {
+    Eigen::Vector3d diff(nearest_vertex->state.x() - cur_state.x(),
+                         nearest_vertex->state.y() - cur_state.y(),
+                         nearest_vertex->state.z() - cur_state.z());
+    if (diff.norm() > max_difference_waypoint_to_graph) {
+      ROS_WARN_COND(global_verbosity >= Verbosity::WARN, 
+          "Waypoint is too far from the global graph (distance is '%.2f'; max "
+          "allowed is '%.2f'). Choose a closer waypoint.",
+          diff.norm(), max_difference_waypoint_to_graph);
+      return ret_path;
+    }
+  }
+
   Eigen::Vector3d origin(nearest_vertex->state[0], nearest_vertex->state[1],
                          nearest_vertex->state[2]);
   Eigen::Vector3d direction(cur_state[0] - origin[0], cur_state[1] - origin[1],
@@ -3642,6 +3672,7 @@ std::vector<geometry_msgs::Pose> Rrg::getGlobalPathFromAtoB(
 
     // Set the heading angle tangent with the moving direction,
     // from the second waypoint; the first waypoint keeps the same direction.
+    // FIXME: mabye use this to update yaw in waypoint list
     if (planning_params_.yaw_tangent_correction) {
       bool is_similar = comparePathWithDirectionApprioximately(
           ret_path, tf::getYaw(ret_path[0].orientation));
