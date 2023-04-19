@@ -112,7 +112,7 @@ PlanningParams:
   rr_mode:          kGraph
   bound_mode:       kExtremeBound
   exp_sensor_list:  ["VLP16"]
-  no_gain_zones_list: ["g1"]
+  no_gain_zones_list: [""] # Andreas: var g1
   edge_length_min:  0.1
   edge_length_max:  3.0
   edge_overshoot:   0.0 #m
