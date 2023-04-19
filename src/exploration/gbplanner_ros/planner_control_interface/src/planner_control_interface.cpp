@@ -524,7 +524,6 @@ bool PlannerControlInterface::stdSrvGoViaWapointsCallback(
             pose.pose.position.x, 
             pose.pose.position.y, 
             pose.pose.position.z);
-
         }
         // FIXME: This should set a flag in RUN function and call function below there
         // getGlobalPathViapoints();
@@ -950,17 +949,21 @@ void PlannerControlInterface::publishViapointVisualization(
     marker.header.frame_id = pose.header.frame_id;
     marker.header.stamp = pose.header.stamp;
     marker.id = markerID++;
-    marker.type = visualization_msgs::Marker::CUBE; 
+
+    marker.text = std::to_string(markerID);
+
+    marker.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
+    //marker.type = visualization_msgs::Marker::CUBE; 
     marker.action = visualization_msgs::Marker::ADD;
     marker.pose = pose.pose;
     marker.pose.position.z += 0.5;
-    marker.scale.x = 0.5; 
-    marker.scale.y = 0.5; 
-    marker.scale.z = 0.5; 
+    marker.scale.x = 1.0; 
+    marker.scale.y = 1.0; 
+    marker.scale.z = 1.0; 
     marker.color.a = 1.0;
-    marker.color.r = 0.0;
-    marker.color.g = 0.0;
-    marker.color.b = 1.0;
+    marker.color.r = 1.0;
+    marker.color.g = 1.0;
+    marker.color.b = 0.0;
 
     waypoints.markers.push_back(marker);
   }
