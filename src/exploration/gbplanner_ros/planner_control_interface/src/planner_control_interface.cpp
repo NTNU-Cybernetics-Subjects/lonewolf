@@ -153,6 +153,11 @@ PlannerControlInterface::PlannerControlInterface(
   go_to_waypoint_visualization_pub_ = nh_.advertise<visualization_msgs::Marker>(
       "gbplanner/go_to_waypoint_pose_visualization", 0);
 
+//Andreas
+  viapoints_visualization_pub_ = nh_.advertise<visualization_msgs::MarkerArray>(
+      "gbplanner/viapoints_visualization", 0);
+//Andreas
+
   ROS_WARN_COND(global_verbosity >= Verbosity::WARN,
                 "[PCI]: Setting pci_manager_");
   pci_manager_ = pci_manager;
@@ -193,6 +198,7 @@ void PlannerControlInterface::navGoalCallback(
 // TODO: published point subscription callback
 void PlannerControlInterface::publishedPointCallback(
     const geometry_msgs::PointStamped& point_msg){
+
         geometry_msgs::PoseStamped posest;
         posest.header = point_msg.header;
         
@@ -212,7 +218,8 @@ void PlannerControlInterface::publishedPointCallback(
         waypoint_list_.push_back(posest);
         // FIXME: need visualization of point in rviz
         // setGoal(posest);
-        publishGoToWaypointVisualization(posest);
+
+        publishViapointVisualization(waypoint_list_);
 
 }
 
@@ -893,22 +900,70 @@ void PlannerControlInterface::publishPlannerStatus(
 void PlannerControlInterface::publishGoToWaypointVisualization(
     const geometry_msgs::PoseStamped& poseStamped) {
   visualization_msgs::Marker marker;
+
   marker.header.frame_id = poseStamped.header.frame_id;
   marker.header.stamp = poseStamped.header.stamp;
   marker.id = 0;
-  marker.type = visualization_msgs::Marker::CUBE; //Andreas
+  marker.type = visualization_msgs::Marker::ARROW; 
   marker.action = visualization_msgs::Marker::ADD;
   marker.pose = poseStamped.pose;
   marker.pose.position.z += 0.5;
-  marker.scale.x = 0.5; //Andreas: var 4
-  marker.scale.y = 0.5; //Andreas: var 0.45
-  marker.scale.z = 0.5; //Andreas: var 0.45
+  marker.scale.x = 4.0; 
+  marker.scale.y = 0.45; 
+  marker.scale.z = 0.45; 
   marker.color.a = 1.0;
   marker.color.r = 0.0;
   marker.color.g = 0.0;
   marker.color.b = 1.0;
   go_to_waypoint_visualization_pub_.publish(marker);
 }
+
+
+//Andreas: visualisering viapunkter
+void PlannerControlInterface::publishViapointVisualization(
+    const std::vector<geometry_msgs::PoseStamped> &poseStampedList) {
+    
+  visualization_msgs::MarkerArray waypoints;
+  visualization_msgs::Marker marker;
+
+  int markerID = 0;
+
+  waypoints.markers.clear();
+  viapoints_visualization_pub_.publish(waypoints);
+
+  for (auto pose : poseStampedList) {
+
+    marker.header.frame_id = pose.header.frame_id;
+    marker.header.stamp = pose.header.stamp;
+    marker.id = markerID++;
+    marker.type = visualization_msgs::Marker::CUBE; 
+    marker.action = visualization_msgs::Marker::ADD;
+    marker.pose = pose.pose;
+    marker.pose.position.z += 0.5;
+    marker.scale.x = 0.5; 
+    marker.scale.y = 0.5; 
+    marker.scale.z = 0.5; 
+    marker.color.a = 1.0;
+    marker.color.r = 0.0;
+    marker.color.g = 0.0;
+    marker.color.b = 1.0;
+
+    waypoints.markers.push_back(marker);
+  }
+
+  viapoints_visualization_pub_.publish(waypoints);
+
+  //waypoints.markers.back().action = visualization_msgs::Marker::DELETE;
+}
+//Andreas
+
+//Andreas når ønsker man å slette alle viapunkt-markørene?
+void PlannerControlInterface::clearViapointsVizualization(
+    const std::vector<geometry_msgs::PoseStamped> &poseStampedList) {
+
+}
+ //Andreas
+
 
 void PlannerControlInterface::runHoming(bool exe_path) {
   ROS_WARN_COND(global_verbosity >= Verbosity::PLANNER_STATUS, "Start homing ...");

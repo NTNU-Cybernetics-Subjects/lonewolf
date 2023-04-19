@@ -141,6 +141,10 @@ class PlannerControlInterface {
   // Visualization Publisher
   ros::Publisher go_to_waypoint_visualization_pub_;
 
+  //Andreas
+  ros::Publisher viapoints_visualization_pub_;
+  //Andreas
+
   // TODO: store all clicked points in a list, 
   // FIXME: should mabye be list of pose?
     std::vector<geometry_msgs::PoseStamped> waypoint_list_;
@@ -281,6 +285,17 @@ class PlannerControlInterface {
                             bool success);
   void publishGoToWaypointVisualization(
       const geometry_msgs::PoseStamped& poseStamped);
+
+  //Andreas
+  void publishViapointVisualization(
+    const std::vector<geometry_msgs::PoseStamped> &poseStampedList);
+  //Andreas
+
+  //Andreas
+  void clearViapointsVizualization(
+    const std::vector<geometry_msgs::PoseStamped> &poseStampedList);
+  //Andreas
+
   // Semantics i-marker
   void initSemanticIMarker();
   void semanticMarkerFeedback(
