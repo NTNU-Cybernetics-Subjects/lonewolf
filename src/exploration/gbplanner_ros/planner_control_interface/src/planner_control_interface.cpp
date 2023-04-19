@@ -527,12 +527,17 @@ bool PlannerControlInterface::stdSrvGoViaWapointsCallback(
 
         }
         // FIXME: This should set a flag in RUN function and call function below there
-        getGlobalPathViapoints();
-        
-        waypoint_list_.clear();
+        // getGlobalPathViapoints();
+        go_via_points_request_ = true;
+        // go_to_waypoint_with_checking_ = true;
+        res.success = true;
+
+        // waypoint_list_.clear();
     }
     else {
-        ROS_INFO("[PCI_servver::goViaPoints] waypoint list empty.");
+        ROS_ERROR_COND(global_verbosity >= Verbosity::ERROR, 
+        "[PCI::goViaWaypoints] waypoint list empty, feature will not be triggered");
+        res.success = false;
     }
 
 
@@ -673,7 +678,11 @@ void PlannerControlInterface::run() {
         if (!go_to_waypoint_with_checking_)
           pci_manager_->goToWaypoint(set_waypoint_);
         else runGlobalRepositioning();
-      
+
+        // TODO: added viapoints feature inside pci logic
+      } else if (go_via_points_request_){
+        go_via_points_request_ = false;
+        getGlobalPathViapoints();
       }
     } else if (pci_status == PCIManager::PCIStatus::kError) {
       // For ANYmal, reset everything to manual then wait for operator.
@@ -721,8 +730,6 @@ void PlannerControlInterface::runGlobalRepositioning() {
 
 // TODO: Get Global Path using viapoints. sends request to gbplanner
 void PlannerControlInterface::getGlobalPathViapoints(){
-    // FIXME: Add request to gbplanner to get global path using waypoint_list_
-    ROS_INFO("[PCI::getGlobalPathViapoints] requesting global path using viapoints from gbplanner");
 
     // requesting maunel planning mode
     planner_msgs::planner_set_planning_mode planning_mode_srv;
@@ -737,8 +744,15 @@ void PlannerControlInterface::getGlobalPathViapoints(){
 
     if (planner_get_global_path_viapoints_client_.call(planner_srv)){
         if (!planner_srv.response.path.empty()){
-            ROS_INFO("[PCI::getGlobalPathViapoints] Got path from planner");
-
+            current_path_.clear();
+            std::vector<geometry_msgs::Pose> path_to_be_exe;
+            // execute path
+            pci_manager_->executePath(planner_srv.response.path, path_to_be_exe,
+                                        PCIManager::ExecutionPathType::kGlobalPath);
+            current_path_ = path_to_be_exe;
+            // clear waypoint list after executing path
+            waypoint_list_.clear();
+            ROS_INFO("[PCI::getGlobalPathViapoints] executing path.");
         }
         else {
             ROS_WARN_THROTTLE(1, "[PCI::getGlobalPathViapoints] Did not get path from planner");
