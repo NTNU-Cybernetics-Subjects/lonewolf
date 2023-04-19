@@ -282,6 +282,16 @@ Visualization Manager:
             {}
           Queue Size: 100
           Value: true
+# Andreas
+        - Class: rviz/MarkerArray
+          Enabled: true
+          Marker Topic: gbplanner/viapoints_visualization
+          Name: ViapointsViz
+          Namespaces:
+            {}
+          Queue Size: 100
+          Value: true
+# Andreas
         - Class: rviz/MarkerArray
           Enabled: true
           Marker Topic: /vis/no_gain_zone
