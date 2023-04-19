@@ -44,6 +44,9 @@
 #include "planner_msgs/planner_srv.h"
 #include "planner_semantic_msgs/SemanticPoint.h"
 
+// TODO: include srv for sending list of poseStamps
+#include "planner_msgs/planner_getPath_viapoints.h"
+
 namespace explorer {
 
 class PlannerControlInterface {
@@ -104,8 +107,10 @@ class PlannerControlInterface {
   ros::ServiceServer pci_std_stop_server_;
   ros::ServiceServer pci_std_go_to_waypoint_server_;
 
-  // TODO: pci server for viapoints
+  // TODO: pci server for viapoints from gbplanner_ui
   ros::ServiceServer pci_std_go_via_waypoints_server_;
+  // TODO: service client to request globalPath using viapoints from gbplanner
+  ros::ServiceClient planner_get_global_path_viapoints_client_;
 
   ros::ServiceServer pci_geofence_server_;
   ros::ServiceServer pci_to_waypoint_server_;
@@ -137,7 +142,9 @@ class PlannerControlInterface {
   ros::Publisher go_to_waypoint_visualization_pub_;
 
   // TODO: store all clicked points in a list, 
+  // FIXME: should mabye be list of pose?
     std::vector<geometry_msgs::PoseStamped> waypoint_list_;
+    bool go_via_points_request_;
 
   bool go_to_waypoint_request_;
   bool go_to_waypoint_with_checking_;
@@ -253,6 +260,10 @@ class PlannerControlInterface {
   void runSearch(bool exe_path);
   void runPassingGate();
   void runGlobalRepositioning();
+
+    // TODO: Get Global Path using viapoints. sends request to gbplanner
+    void getGlobalPathViapoints();
+
   geometry_msgs::Pose getPoseToStart();
 
   bool search_request_;

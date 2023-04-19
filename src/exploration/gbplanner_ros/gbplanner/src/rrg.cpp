@@ -3473,6 +3473,226 @@ std::vector<geometry_msgs::Pose> Rrg::getGlobalPath(
   return ret_path;
 }
 
+// TODO: get global path using viapoints
+std::vector<geometry_msgs::Pose> Rrg::getGlobalPathViapoints(
+        std::vector<geometry_msgs::PoseStamped> &viapoints){
+
+            std::vector<geometry_msgs::Pose> ret_path;
+            std::vector<geometry_msgs::Pose> temp_path;
+
+            // calculate from curent position to first waypoints first
+            geometry_msgs::PoseStamped cur_pose;
+            cur_pose.pose.position.x = current_state_[0];
+            cur_pose.pose.position.y = current_state_[1];
+            cur_pose.pose.position.z = current_state_[2];
+            // cur_pose.pose.orientation.x = 0.0;
+            // cur_pose.pose.orientation.y = 0.0;
+            // cur_pose.pose.orientation.z = 1.0;
+            // cur_pose.pose.orientation.w = 0.0;
+            ret_path = getGlobalPathFromAtoB(cur_pose, viapoints.at(0));
+            
+            // caluclate thorugh all viapoints, only if there are two points or more
+            if (viapoints.size() > 1){
+                for (int i = 1; i < viapoints.size(); i++){
+                    temp_path = getGlobalPathFromAtoB(viapoints.at(i - 1), viapoints.at(i));
+                    ret_path.insert(ret_path.end(), temp_path.begin(), temp_path.end());
+                    ROS_INFO("[RRG::getGlobalPathViapoints] connecting viapoints, iteration %.2f", i);
+                }
+            }
+
+            visualization_->visualizeRefPath(ret_path);
+            return ret_path;
+}
+
+
+//TODO: get global path from a point to another.
+std::vector<geometry_msgs::Pose> Rrg::getGlobalPathFromAtoB(
+    geometry_msgs::PoseStamped& fromPose, geometry_msgs::PoseStamped& toPose) {
+  
+  std::vector<geometry_msgs::Pose> ret_path;
+
+  if (global_graph_->getNumVertices() <= 1) {
+    ROS_WARN_COND(global_verbosity >= Verbosity::WARN, "[GlobalGraph] Graph is empty, nothing to search for homing.");
+    return ret_path;
+  }
+    // StateVec(x,y,z,yaw)
+  StateVec cur_state;
+  // FIXME: Dont know what yaw should be.
+  cur_state << fromPose.pose.position.x, fromPose.pose.position.y, fromPose.pose.position.z,
+      current_state_[3];
+
+  StateVec wp;
+  wp << toPose.pose.position.x, toPose.pose.position.y,
+      toPose.pose.position.z;
+
+    // FIXME: mabye we need to find nearest vertex to start position aswell
+  Vertex* wp_nearest_vertex;
+  if (!global_graph_->getNearestVertex(&wp, &wp_nearest_vertex)) {
+    ROS_WARN_COND(global_verbosity >= Verbosity::WARN, "Cannot find any nearby vertex to reposition.");
+    return ret_path;
+  } else if (wp_nearest_vertex == NULL) {
+    return ret_path;
+  } else {
+    Eigen::Vector3d diff(wp_nearest_vertex->state.x() - wp.x(),
+                         wp_nearest_vertex->state.y() - wp.y(),
+                         wp_nearest_vertex->state.z() - wp.z());
+    if (diff.norm() > max_difference_waypoint_to_graph) {
+      ROS_WARN_COND(global_verbosity >= Verbosity::WARN, 
+          "Waypoint is too far from the global graph (distance is '%.2f'; max "
+          "allowed is '%.2f'). Choose a closer waypoint.",
+          diff.norm(), max_difference_waypoint_to_graph);
+      return ret_path;
+    }
+  }
+
+  if (robot_params_.type == RobotType::kGroundRobot) {
+    MapManager::VoxelStatus vs;
+    Eigen::Vector3d new_vertex_pos = cur_state.head(3);
+    double ground_height = projectSample(new_vertex_pos, vs);
+    if (vs == MapManager::VoxelStatus::kOccupied) {
+      cur_state(2) -= (ground_height - planning_params_.max_ground_height);
+    }
+  }
+  Vertex* nearest_vertex = NULL;
+  if (!global_graph_->getNearestVertex(&cur_state, &nearest_vertex))
+    return ret_path;
+  if (nearest_vertex == NULL) return ret_path;
+  Eigen::Vector3d origin(nearest_vertex->state[0], nearest_vertex->state[1],
+                         nearest_vertex->state[2]);
+  Eigen::Vector3d direction(cur_state[0] - origin[0], cur_state[1] - origin[1],
+                            cur_state[2] - origin[2]);
+  double direction_norm = direction.norm();
+
+  Vertex* link_vertex = NULL;
+  const double kRadiusLimit = 1.0;
+  bool connect_state_to_graph = true;
+  if (direction_norm <= kRadiusLimit) {
+    // Note: if kRadiusLimit <= edge_length_min it will fail with
+    // kErrorShortEdge, dirty fix to check max
+    // @TODO: find better way to do this.
+    // Blindly add a link/vertex to the graph if small radius.
+    Vertex* new_vertex =
+        new Vertex(global_graph_->generateVertexID(), cur_state);
+    new_vertex->parent = nearest_vertex;
+    new_vertex->distance = nearest_vertex->distance + direction_norm;
+    nearest_vertex->children.push_back(new_vertex);
+    global_graph_->addVertex(new_vertex);
+    global_graph_->addEdge(new_vertex, nearest_vertex, direction_norm);
+    // Add edges only from this vertex.
+    ExpandGraphReport rep;
+    expandGraphEdges(global_graph_, new_vertex, rep);
+    link_vertex = new_vertex;
+  } else {
+    ROS_WARN_COND(global_verbosity >= Verbosity::WARN, "[GlobalGraph] Try to add current state to the graph.");
+    ExpandGraphReport rep;
+    expandGraph(global_graph_, cur_state, rep);
+    if (rep.status == ExpandGraphStatus::kSuccess) {
+      ROS_WARN_COND(global_verbosity >= Verbosity::WARN, "[GlobalGraph] Added successfully.");
+      link_vertex = rep.vertex_added;
+    } else {
+      // Not implemented solution for this case yet.
+      // Hopefully this one will not happen if the global planner always adds
+      // vertices from odometry --> naive backtracking.
+      connect_state_to_graph = false;
+      ROS_WARN_COND(global_verbosity >= Verbosity::WARN, "[GlobalGraph] Can not add current state to graph since: ");
+      switch (rep.status) {
+        case ExpandGraphStatus::kErrorKdTree:
+          ROS_WARN_COND(global_verbosity >= Verbosity::DEBUG, "kErrorKdTree.");
+          break;
+        case ExpandGraphStatus::kErrorCollisionEdge:
+          ROS_WARN_COND(global_verbosity >= Verbosity::DEBUG, "kErrorCollisionEdge.");
+          break;
+        case ExpandGraphStatus::kErrorShortEdge:
+          ROS_WARN_COND(global_verbosity >= Verbosity::DEBUG, "kErrorShortEdge.");
+          break;
+        default:
+          ROS_WARN_COND(global_verbosity >= Verbosity::DEBUG, "kErrorUnknown.");
+          break;
+      }
+      ROS_WARN_COND(global_verbosity >= Verbosity::WARN, "[GlobalGraph] Failed to find global path.");
+    }
+  }
+
+  ROS_WARN_COND(global_verbosity >= Verbosity::WARN, "Finding a path from current[%d] to vertex[%d].", link_vertex->id,
+           wp_nearest_vertex->id);
+
+  if (connect_state_to_graph) {
+    if (!global_graph_->findShortestPaths(link_vertex->id, global_graph_rep_)) {
+      ROS_ERROR_COND(global_verbosity >= Verbosity::ERROR, "[GlobalGraph] Failed to find shortest path.");
+      return ret_path;
+    }
+    std::vector<int> global_path_id;
+    global_graph_->getShortestPath(wp_nearest_vertex->id, global_graph_rep_,
+                                   true, global_path_id);
+    if (global_path_id.empty()) {
+      ROS_ERROR_COND(global_verbosity >= Verbosity::ERROR, "[GlobalGraph] Could not find a path to home.");
+      return ret_path;
+    }
+    int global_path_id_size = global_path_id.size();
+    for (int i = 0; i < global_path_id_size; ++i) {
+      StateVec state = global_graph_->getVertex(global_path_id[i])->state;
+      tf::Quaternion quat;
+      quat.setEuler(0.0, 0.0, state[3]);
+      tf::Vector3 origin(state[0], state[1], state[2]);
+      tf::Pose poseTF(quat, origin);
+      geometry_msgs::Pose pose;
+      tf::poseTFToMsg(poseTF, pose);
+      ret_path.push_back(pose);
+    }
+
+    // Set the heading angle tangent with the moving direction,
+    // from the second waypoint; the first waypoint keeps the same direction.
+    if (planning_params_.yaw_tangent_correction) {
+      bool is_similar = comparePathWithDirectionApprioximately(
+          ret_path, tf::getYaw(ret_path[0].orientation));
+      for (int i = 0; i < (ret_path.size() - 1); ++i) {
+        Eigen::Vector3d vec;
+        if ((!planning_params_.homing_backward) || (is_similar)) {
+          vec << ret_path[i + 1].position.x - ret_path[i].position.x,
+              ret_path[i + 1].position.y - ret_path[i].position.y,
+              ret_path[i + 1].position.z - ret_path[i].position.z;
+        } else if (planning_params_.homing_backward) {
+          vec << ret_path[i].position.x - ret_path[i + 1].position.x,
+              ret_path[i].position.y - ret_path[i + 1].position.y,
+              ret_path[i].position.z - ret_path[i + 1].position.z;
+        }
+        double yaw = std::atan2(vec[1], vec[0]);
+        tf::Quaternion quat;
+        quat.setEuler(0.0, 0.0, yaw);
+        ret_path[i + 1].orientation.x = quat.x();
+        ret_path[i + 1].orientation.y = quat.y();
+        ret_path[i + 1].orientation.z = quat.z();
+        ret_path[i + 1].orientation.w = quat.w();
+      }
+    }
+  }
+  visualization_->visualizeGlobalGraph(global_graph_);
+  // Modify path if required
+  if (planning_params_.path_safety_enhance_enable) {
+    ros::Time mod_time;
+    START_TIMER(mod_time);
+    std::vector<geometry_msgs::Pose> mod_path;
+    if (improveFreePath(ret_path, mod_path, true)) {
+      ret_path = mod_path;
+    }
+    double dmod_time = GET_ELAPSED_TIME(mod_time);
+    ROS_WARN_COND(global_verbosity >= Verbosity::WARN, "Compute an aternate path for homing in %f(s)", dmod_time);
+    visualization_->visualizeModPath(mod_path);
+  }
+
+  // Interpolate path
+  const double kInterpolationDistance =
+      planning_params_.path_interpolation_distance;
+  std::vector<geometry_msgs::Pose> interp_path;
+  if (Trajectory::interpolatePath(ret_path, kInterpolationDistance,
+                                  interp_path)) {
+    ret_path = interp_path;
+  }
+  visualization_->visualizeRefPath(ret_path);
+  return ret_path;
+}
+
+
 std::vector<geometry_msgs::Pose> Rrg::getHomingPath(std::string tgt_frame) {
   std::vector<geometry_msgs::Pose> ret_path;
   ret_path = searchHomingPath(tgt_frame, current_state_);
@@ -3546,7 +3766,7 @@ std::vector<geometry_msgs::Pose> Rrg::getHomingPath(std::string tgt_frame) {
     ret_path = interp_path;
   }
 
-  visualization_->visualizeRefPath(ret_path);
+//   visualization_->visualizeRefPath(ret_path);
 
   return ret_path;
 }

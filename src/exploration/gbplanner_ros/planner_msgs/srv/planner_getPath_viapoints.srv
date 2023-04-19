@@ -1,0 +1,6 @@
+bool check_collision
+geometry_msgs/PoseStamped[] waypoints
+-------
+
+# Return best path.
+geometry_msgs/Pose[] path

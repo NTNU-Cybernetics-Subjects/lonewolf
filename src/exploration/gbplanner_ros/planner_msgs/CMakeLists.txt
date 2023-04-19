@@ -33,6 +33,7 @@ add_service_files(
   planner_go_to_waypoint.srv
   planner_dynamic_global_bound.srv
   planner_set_planning_mode.srv
+  planner_getPath_viapoints.srv
 )
 
 add_message_files(

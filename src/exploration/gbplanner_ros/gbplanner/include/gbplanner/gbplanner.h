@@ -26,6 +26,9 @@
 #include "planner_msgs/planner_srv.h"
 #include "planner_msgs/planner_string_trigger.h"
 
+// TODO: viapoint msg type
+#include "planner_msgs/planner_getPath_viapoints.h"
+
 namespace explorer {
 
 class Gbplanner {
@@ -69,6 +72,10 @@ class Gbplanner {
   ros::ServiceServer planner_load_graph_service_;
   ros::ServiceServer planner_save_graph_service_;
   ros::ServiceServer planner_goto_wp_service_;
+
+    // TODO: service for retriving global path from rrg
+    ros::ServiceServer planner_globalPath_viapoints_server_;
+
   ros::ServiceServer planner_enable_untraversable_polygon_subscriber_service_;
   ros::ServiceServer planner_set_planning_trigger_mode_service_;
 
@@ -117,6 +124,11 @@ class Gbplanner {
       planner_msgs::planner_go_to_waypoint::Request& req,
       planner_msgs::planner_go_to_waypoint::Response& res);
 
+    // TODO: callback when requesting global path using viapoints
+    bool plannerGetViaPointPathCallback(
+        planner_msgs::planner_getPath_viapoints::Request &req,
+        planner_msgs::planner_getPath_viapoints::Response &res);
+        
   bool plannerEnableUntraversablePolygonSubscriberCallback(
       std_srvs::SetBool::Request& request,
       std_srvs::SetBool::Response& response);

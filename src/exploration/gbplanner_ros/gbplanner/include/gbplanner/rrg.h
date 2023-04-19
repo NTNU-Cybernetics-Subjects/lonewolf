@@ -181,6 +181,15 @@ class Rrg {
   std::vector<geometry_msgs::Pose> getGlobalPath(
       geometry_msgs::PoseStamped& waypoint);
 
+    // TODO: get global path from one point to another.
+    std::vector<geometry_msgs::Pose> getGlobalPathFromAtoB(
+        geometry_msgs::PoseStamped& fromPose, 
+        geometry_msgs::PoseStamped& toPose);
+    
+    //TODO: get global path using viapoints
+    std::vector<geometry_msgs::Pose> getGlobalPathViapoints(
+        std::vector<geometry_msgs::PoseStamped> &viapoints);
+
   // Set current position as homing.
   bool setHomingPos();
 
