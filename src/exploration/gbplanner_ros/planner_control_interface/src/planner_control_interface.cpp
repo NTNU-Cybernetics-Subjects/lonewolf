@@ -530,7 +530,7 @@ bool PlannerControlInterface::stdSrvGoViaWapointsCallback(
         go_via_points_request_ = true;
         // go_to_waypoint_with_checking_ = true;
         res.success = true;
-
+        
         // waypoint_list_.clear();
     }
     else {
@@ -677,7 +677,7 @@ void PlannerControlInterface::run() {
         if (!go_to_waypoint_with_checking_)
           pci_manager_->goToWaypoint(set_waypoint_);
         else runGlobalRepositioning();
-
+      
         // TODO: added viapoints feature inside pci logic
       } else if (go_via_points_request_){
         go_via_points_request_ = false;

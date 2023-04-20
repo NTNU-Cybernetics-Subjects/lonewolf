@@ -18,7 +18,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>/home/lonewolf/lonewolf2023/loneWolf/blender_export/normal_world.dae</uri>
+            <uri>model://normal_world/normal_world.dae</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -39,7 +39,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>/home/lonewolf/lonewolf2023/loneWolf/blender_export/normal_world.dae</uri>
+            <uri>model://normal_world/normal_world.dae</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>

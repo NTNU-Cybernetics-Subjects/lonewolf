@@ -13,5 +13,13 @@
         "any": "cpp",
         "slist": "cpp",
         "system_error": "cpp"
-    }
+    },
+    "python.autoComplete.extraPaths": [
+        "/home/lonewolf/lonewolf2023/lonewolf/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/lonewolf/lonewolf2023/lonewolf/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ]
 }

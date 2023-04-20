@@ -157,7 +157,7 @@ PlanningParams:
   relaxed_corridor_multiplier: 1.5
   homing_backward: false
   auto_homing_enable: true
-  time_budget_limit: 3600 # seconds
+  time_budget_limit: 36000 # seconds # Andreas: la på en null
   global_frame_id: world
   global_path_inclination_check: true
   go_home_if_fully_explored: true
@@ -168,14 +168,14 @@ AdaptiveObbParams:
   local_pointcloud_range: 50.0
   bounding_box_size_max: 35
 
-GeofenceParams:
-  AreaList: ["GLeft", "GBack", "GRight"]
-  GBack:
-    center: [-3.0, 0.0, 0.0]
-    size:   [2.0, 6.0, 0.0]
-  GLeft:
-    center: [0.0, 4.0, 0.0]
-    size:   [6.0, 2.0, 0.0]
-  GRight:
-    center: [0.0, -4.0, 0.0]
-    size:   [6.0, 2.0, 0.0]
+# GeofenceParams:
+#   AreaList: ["GLeft", "GBack", "GRight"]
+#   GBack:
+#     center: [-3.0, 0.0, 0.0]
+#     size:   [2.0, 6.0, 0.0]
+#   GLeft:
+#     center: [0.0, 4.0, 0.0]
+#     size:   [6.0, 2.0, 0.0]
+#   GRight:
+#     center: [0.0, -4.0, 0.0]
+#     size:   [6.0, 2.0, 0.0]
