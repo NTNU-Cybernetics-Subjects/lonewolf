@@ -67,7 +67,7 @@ void Gbplanner::initializeAttributes() {
       nh_.advertiseService("gbplanner/go_to_waypoint",
                            &Gbplanner::plannerGotoWaypointCallback, this);
   
-    // TODO: service for retriving global path from rrg
+    // TODO: VEGAR: service for retriving global path from rrg
     planner_globalPath_viapoints_server_ = 
         nh_.advertiseService("gbplanner/get_path_viapoints",
                                 &Gbplanner::plannerGetViaPointPathCallback, this);
@@ -101,7 +101,7 @@ bool Gbplanner::plannerGotoWaypointCallback(
   res.path = rrg_->getGlobalPath(req.waypoint);
   return true;
 }
-// TODO: callback when requesting global path using viapoints
+// TODO: VEGAR: callback when requesting global path using viapoints
 bool Gbplanner::plannerGetViaPointPathCallback(
     planner_msgs::planner_getPath_viapoints::Request &req,
     planner_msgs::planner_getPath_viapoints::Response &res) {

@@ -17,7 +17,7 @@ gbplanner_panel::gbplanner_panel(QWidget* parent) : rviz::Panel(parent) {
   planner_client_global_planner =
       nh.serviceClient<planner_msgs::pci_global>("pci_global");
 
-    // TODO: viapoint service not added here.
+    // TODO: VEGAR: viapoint service not added here.
   planner_client_plan_via_waypoints = nh.serviceClient<std_srvs::Trigger>(
     "/planner_control_interface/std_srvs/go_via_waypoints");
 
@@ -30,7 +30,7 @@ gbplanner_panel::gbplanner_panel(QWidget* parent) : rviz::Panel(parent) {
   button_plan_to_waypoint = new QPushButton;
   button_global_planner = new QPushButton;
 
-  // TODO: trying to add viapoint button
+  // TODO: VEGAR: trying to add viapoint button
   button_plan_via_waypoints = new QPushButton;
 
   button_start_planner->setText("Start Explorer");
@@ -40,7 +40,7 @@ gbplanner_panel::gbplanner_panel(QWidget* parent) : rviz::Panel(parent) {
   button_plan_to_waypoint->setText("Plan to Waypoint");
   button_global_planner->setText("Run Global");
 
-  // TODO: viapoint button texts
+  // TODO: VEGAR: viapoint button texts
   button_plan_via_waypoints->setText("Plan using Viapoints");
 
 
@@ -50,7 +50,7 @@ gbplanner_panel::gbplanner_panel(QWidget* parent) : rviz::Panel(parent) {
   v_box_layout->addWidget(button_init_motion);
   v_box_layout->addWidget(button_plan_to_waypoint);
 
-  // TODO: viapoint button widget
+  // TODO: VEGAR: viapoint button widget
   v_box_layout->addWidget(button_plan_via_waypoints);
 
   QVBoxLayout* global_vbox_layout = new QVBoxLayout;
@@ -80,7 +80,7 @@ gbplanner_panel::gbplanner_panel(QWidget* parent) : rviz::Panel(parent) {
   connect(button_global_planner, SIGNAL(clicked()), this,
           SLOT(on_global_planner_click()));
   
-  // TODO: add action on click
+  // TODO: VEGAR: add action on click
   connect(button_plan_via_waypoints, SIGNAL(clicked()), this,
           SLOT(on_plan_via_waypoints()));
 
@@ -126,9 +126,8 @@ void gbplanner_panel::on_plan_to_waypoint_click() {
   }
 }
 
-// TODO: viapoints on press button
+// TODO: VEGAR: viapoints on press button
 void gbplanner_panel::on_plan_via_waypoints(){
-    // FIXME: implement
     std_srvs::Trigger srv;
     if (!planner_client_plan_via_waypoints.call(srv)){
         ROS_ERROR("[GBPLANNER-UI] Service call failed: %s", 

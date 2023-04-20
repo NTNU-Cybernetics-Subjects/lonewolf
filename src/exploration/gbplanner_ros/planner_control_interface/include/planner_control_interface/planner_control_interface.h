@@ -107,9 +107,9 @@ class PlannerControlInterface {
   ros::ServiceServer pci_std_stop_server_;
   ros::ServiceServer pci_std_go_to_waypoint_server_;
 
-  // TODO: pci server for viapoints from gbplanner_ui
+  // TODO: VEGAR: pci server for viapoints from gbplanner_ui
   ros::ServiceServer pci_std_go_via_waypoints_server_;
-  // TODO: service client to request globalPath using viapoints from gbplanner
+  // TODO: VEGAR: service client to request globalPath using viapoints from gbplanner
   ros::ServiceClient planner_get_global_path_viapoints_client_;
 
   ros::ServiceServer pci_geofence_server_;
@@ -145,7 +145,7 @@ class PlannerControlInterface {
   ros::Publisher viapoints_visualization_pub_;
   //Andreas
 
-  // TODO: store all clicked points in a list, 
+  // TODO: VEGAR: store all clicked points in a list, 
   // FIXME: should mabye be list of pose?
     std::vector<geometry_msgs::PoseStamped> waypoint_list_;
     bool go_via_points_request_;
@@ -193,7 +193,7 @@ class PlannerControlInterface {
   void poseCallback(const geometry_msgs::PoseWithCovarianceStamped& pose);
   void navGoalCallback(const geometry_msgs::PoseStamped& nav_msg);
 
-    // TODO: callback on published point subscription
+    // TODO: VEGAR: callback on published point subscription
     void publishedPointCallback(const geometry_msgs::PointStamped& point_msg);
 
   void poseGoalCallback(const geometry_msgs::PoseStamped& pose_msg);
@@ -218,7 +218,7 @@ class PlannerControlInterface {
   bool stdSrvGoToWaypointCallback(std_srvs::Trigger::Request& req,
                                   std_srvs::Trigger::Response& res);
 
-// TODO: declare waypoint callback
+// TODO: VEGAR: declare waypoint callback
   bool stdSrvGoViaWapointsCallback(std_srvs::Trigger::Request& req,
                                   std_srvs::Trigger::Response& res);
 
@@ -265,7 +265,7 @@ class PlannerControlInterface {
   void runPassingGate();
   void runGlobalRepositioning();
 
-    // TODO: Get Global Path using viapoints. sends request to gbplanner
+    // TODO: VEGAR: Get Global Path using viapoints. sends request to gbplanner
     void getGlobalPathViapoints();
 
   geometry_msgs::Pose getPoseToStart();
