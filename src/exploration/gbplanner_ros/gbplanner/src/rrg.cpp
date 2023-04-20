@@ -3500,7 +3500,7 @@ std::vector<geometry_msgs::Pose> Rrg::getGlobalPathViapoints(
                 for (int i = 1; i < viapoints.size(); i++){
                     temp_path = getGlobalPathFromAtoB(viapoints.at(i - 1), viapoints.at(i));
                     ret_path.insert(ret_path.end(), temp_path.begin(), temp_path.end());
-                    ROS_INFO("[RRG::getGlobalPathViapoints] connecting viapoints, iteration %.2f", i);
+                    ROS_INFO("[RRG::getGlobalPathViapoints] connecting viapoints, iteration %.2d", i);
                 }
             }
 
