@@ -3473,7 +3473,7 @@ std::vector<geometry_msgs::Pose> Rrg::getGlobalPath(
   return ret_path;
 }
 
-// TODO: get global path using viapoints
+// TODO: VEGAR: get global path using viapoints
 std::vector<geometry_msgs::Pose> Rrg::getGlobalPathViapoints(
         std::vector<geometry_msgs::PoseStamped> &viapoints){
 
@@ -3509,7 +3509,7 @@ std::vector<geometry_msgs::Pose> Rrg::getGlobalPathViapoints(
 }
 
 
-//TODO: get global path from a point to another.
+//TODO: VEGAR: get global path from a point to another.
 std::vector<geometry_msgs::Pose> Rrg::getGlobalPathFromAtoB(
     geometry_msgs::PoseStamped& fromPose, geometry_msgs::PoseStamped& toPose) {
   

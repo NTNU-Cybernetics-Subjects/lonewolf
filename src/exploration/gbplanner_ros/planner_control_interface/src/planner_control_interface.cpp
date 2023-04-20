@@ -42,7 +42,7 @@ PlannerControlInterface::PlannerControlInterface(
       "planner_control_interface/std_srvs/go_to_waypoint",
       &PlannerControlInterface::stdSrvGoToWaypointCallback, this);
 
-// TODO: pci std server for viapoints
+// TODO: VEGAR: pci std server for viapoints
     pci_std_go_via_waypoints_server_ = nh_.advertiseService(
         "/planner_control_interface/std_srvs/go_via_waypoints",
         &PlannerControlInterface::stdSrvGoViaWapointsCallback, this);
@@ -137,10 +137,10 @@ PlannerControlInterface::PlannerControlInterface(
       nh_.subscribe("/move_base_simple/goal", 1,
                     &PlannerControlInterface::navGoalCallback, this);
 
-    // TODO: subscribe to publish points
+    // TODO: VEGAR: subscribe to publish points
     published_point_sub = nh_.subscribe("/clicked_point", 5, 
             &PlannerControlInterface::publishedPointCallback, this);
-    // TODO: service client to request global path using viapoints. sends to gbplanner.
+    // TODO: VEGAR: service client to request global path using viapoints. sends to gbplanner.
     planner_get_global_path_viapoints_client_ = nh_.serviceClient<planner_msgs::planner_getPath_viapoints>(
         "gbplanner/get_path_viapoints");
 
@@ -195,7 +195,7 @@ void PlannerControlInterface::navGoalCallback(
   setGoal(posest);
 }
 
-// TODO: published point subscription callback
+// TODO: VEGAR: published point subscription callback
 void PlannerControlInterface::publishedPointCallback(
     const geometry_msgs::PointStamped& point_msg){
 
@@ -283,7 +283,7 @@ void PlannerControlInterface::resetPlanner() {
   go_to_waypoint_request_ = false;
   go_to_waypoint_with_checking_ = false;
 
-    //TODO: clear waypoint list on stop planner
+    //TODO: VEGAR: clear waypoint list on stop planner
     waypoint_list_.clear();
 
   // Remove the last waypoint to prevent the planner starts from that last wp.
@@ -512,7 +512,7 @@ bool PlannerControlInterface::stdSrvGoToWaypointCallback(
   return true;
 }
 
-// TODO: define waypoint callback this is called when button clikced in rviz
+// TODO: VEGAR: define waypoint callback this is called when button clikced in rviz
 bool PlannerControlInterface::stdSrvGoViaWapointsCallback(
     std_srvs::Trigger::Request& req, std_srvs::Trigger::Response& res) {
 
@@ -678,7 +678,7 @@ void PlannerControlInterface::run() {
           pci_manager_->goToWaypoint(set_waypoint_);
         else runGlobalRepositioning();
 
-        // TODO: added viapoints feature inside pci logic
+        // TODO: VEGAR: added viapoints feature inside pci logic
       } else if (go_via_points_request_){
         go_via_points_request_ = false;
         getGlobalPathViapoints();
@@ -727,7 +727,7 @@ void PlannerControlInterface::runGlobalRepositioning() {
   }
 }
 
-// TODO: Get Global Path using viapoints. sends request to gbplanner
+// TODO: VEGAR: Get Global Path using viapoints. sends request to gbplanner
 void PlannerControlInterface::getGlobalPathViapoints(){
 
     // requesting maunel planning mode
