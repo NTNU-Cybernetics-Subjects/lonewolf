@@ -42,9 +42,6 @@ class PCIGeneral : public PCIManager {
   double getVelocity(ExecutionPathType path_type) { return v_max_; }
   bool goToWaypoint(geometry_msgs::Pose& pose);
 
-  // TODO: go via Waypoints
-  bool goViaWaypoints(geometry_msgs::Pose& fromPose, geometry_msgs::Pose& toPose);
-
   void processActionFeedback(double estimated_time_left);
   void triggerPlanner();
 

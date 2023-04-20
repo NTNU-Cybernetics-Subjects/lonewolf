@@ -306,15 +306,6 @@ bool PCIGeneral::goToWaypoint(geometry_msgs::Pose& pose) {
   return true;
 }
 
-// TODO: 
-bool PCIGeneral::goViaWaypoints(geometry_msgs::Pose& fromPose, geometry_msgs::Pose& toPose){
-    ROS_INFO("going through waypoints");
-    // 
-
-
-    return true;
-}
-
 bool PCIGeneral::executePath(const std::vector<geometry_msgs::Pose>& path,
                              std::vector<geometry_msgs::Pose>& modified_path,
                              ExecutionPathType path_type) {
