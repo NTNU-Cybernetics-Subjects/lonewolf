@@ -1,7 +1,7 @@
 <launch>
   <!-- All settings -->
   <arg name="robot_name" default="smb"/>
-  <arg name="gazebo_gui_en" default="false"/>
+  <arg name="gazebo_gui_en" default="false"/> <!-- True starts up Gazebo -->
   <arg name="use_sim_time" default="true"/>
   <arg name="rviz_en" default="true" />
   <arg name="launch_prefix" default=""/> <!-- gdb -ex run //args -->

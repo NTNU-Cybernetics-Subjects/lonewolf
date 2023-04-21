@@ -32,12 +32,14 @@ gbplanner_panel::gbplanner_panel(QWidget* parent) : rviz::Panel(parent) {
   button_init_motion->setText("Initialization");
   button_plan_to_waypoint->setText("Plan to Waypoint");
   button_global_planner->setText("Run Global");
+  
 
   v_box_layout->addWidget(button_start_planner);
   v_box_layout->addWidget(button_stop_planner);
   v_box_layout->addWidget(button_homing);
   v_box_layout->addWidget(button_init_motion);
   v_box_layout->addWidget(button_plan_to_waypoint);
+
 
   QVBoxLayout* global_vbox_layout = new QVBoxLayout;
   QHBoxLayout* global_hbox_layout = new QHBoxLayout;

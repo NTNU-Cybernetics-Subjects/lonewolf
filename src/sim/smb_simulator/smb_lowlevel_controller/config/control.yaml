@@ -35,10 +35,10 @@ smb_velocity_controller:
       has_velocity_limits    : true
       max_velocity           : 1.5   # m/s
       has_acceleration_limits: true
-      max_acceleration       : 3   # m/s^2
+      max_acceleration       : 3.0   # m/s^2
   angular:
     z:
       has_velocity_limits    : true
-      max_velocity           : 1   # rad/s
+      max_velocity           : 1.0   # rad/s # Andreas: var 1
       has_acceleration_limits: true
-      max_acceleration       : 2   # rad/s^2
+      max_acceleration       : 2.0   # rad/s^2 # Andreas: var 2
