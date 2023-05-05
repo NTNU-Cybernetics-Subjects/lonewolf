@@ -20,7 +20,7 @@ src/misc/minkindr_ros/
 src/misc/mav_comm/
 src/misc/yaml_cpp_catkin/
 src/mapping/voxblox/
-#src/exploration/pci_general/
+src/exploration/pci_general/
 src/exploration/adaptive_obb_ros/
 
 src/sim/lidar_simulator/
