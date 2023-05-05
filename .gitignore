@@ -26,5 +26,6 @@ src/exploration/adaptive_obb_ros/
 src/sim/lidar_simulator/
 
 src/sim/subt_cave_sim/
+.vscode
 src/.vscode
 rosprintouts
