@@ -43,6 +43,7 @@
     <node pkg="twist_mux" type="twist_mux" name="twist_mux">
       <rosparam command="load" file="$(find atv_lowlevel_controller)/config/twist_mux.yaml" />
       <remap from="cmd_vel_out" to="atv_velocity_controller/cmd_vel"/>
+      <!-- see if this remap is right -->
     </node>
 
     <!-- Spawn human control nodes -->
