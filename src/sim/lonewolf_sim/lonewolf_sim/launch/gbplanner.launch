@@ -12,9 +12,6 @@
   <arg name="pci_file" default="$(find gbplanner)/config/$(arg robot_name)/planner_control_interface_sim_config.yaml"/>
   <arg name="voxblox_config_file" default="$(find gbplanner)/config/$(arg robot_name)/voxblox_sim_config.yaml"/>
   <arg name="map_config_file" default="$(arg voxblox_config_file)"/>
-  <!-- <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/niosh_osrf.world"/> -->
-  <!-- <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/darpa_cave_01.world"/> -->
-  <!-- <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/pittsburgh_mine.world"/> -->
   <arg name="world_file" default="$(find atv_gazebo)/worlds/maze_world.world"/>
 
   <!-- Static TF -->
