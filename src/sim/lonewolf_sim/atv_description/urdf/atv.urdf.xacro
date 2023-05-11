@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+
+<robot name="atv" 
+	xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<xacro:property name="robot_name" value="atv"/>
+	<xacro:arg name="robot_namespace" default="/" />
+	<xacro:property name="M_PI" value="3.14159"/>
+	<xacro:property name="chassisHeight" value="1.26"/>
+	<xacro:property name="chassisLength" value="2.184"/>
+	<xacro:property name="chassisWidth" value="1.168"/>
+	<xacro:property name="chassisMass" value="300.0"/>
+
+	<!-- Included URDF/XACRO Files -->
+	<xacro:include filename="$(find atv_description)/urdf/wheel.urdf.xacro" />
+    <!-- FIXME: using smb_utils find out if this needs to change -->
+	<xacro:include filename="$(find atv_description)/urdf/smb_utils.urdf.xacro" />
+	<!-- Base link is the robot chassis -->
+	<link name="base_link">
+		<visual>
+			<origin xyz="0.05 0 0.05"/>
+			<geometry>
+				<mesh filename="package://atv_description/meshes/rigid_body.stl" scale="0.001 0.001 0.001" />
+			</geometry>
+			<material name="w">
+				<color rgba="1.0 1.0 1.0 1.0"/>
+			</material>
+		</visual>
+
+        <!-- Box collision -->
+		<!-- <collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+				<box size="${chassisLength} ${chassisWidth} ${chassisHeight}"/>
+			</geometry>
+		</collision> -->
+        
+        <!-- Mesh collision -->
+        <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+				<mesh filename="package://atv_description/meshes/rigid_body.stl" scale="0.001 0.001 0.001" />
+			</geometry>
+        </collision>
+
+	</link>
+
+	<gazebo reference="base_link">
+		<material>Gazebo/Orange</material>
+	</gazebo>
+
+	<!-- Interial link stores the robot's inertial information -->
+	<link name="inertial_link">
+		<inertial>
+			<mass value="${chassisMass}" />
+			<origin xyz="0 0 0" />
+			<xacro:box_inertia m="${chassisMass}" x="${chassisLength}" y="${chassisWidth}" z="${chassisHeight}"/>
+		</inertial>
+	</link>
+
+	<joint name="inertial_joint" type="fixed">
+		<origin xyz="0 0 0" rpy="0 0 0" />
+		<parent link="base_link" />
+		<child link="inertial_link" />
+	</joint>
+
+	<!-- atv wheel macros -->
+	<xacro:atv_wheel wheel_prefix="LF">
+		<origin xyz="${frontWheelX} ${chassisWidth/2+wheelClearance-wheelWidth/2} ${-wheelHeight}" rpy="0 0 0" />
+	</xacro:atv_wheel>
+	<xacro:atv_wheel wheel_prefix="RF">
+		<origin xyz="${frontWheelX} ${-chassisWidth/2-wheelClearance+wheelWidth/2} ${-wheelHeight}" rpy="0 0 0" />
+	</xacro:atv_wheel>
+	<xacro:atv_wheel wheel_prefix="LH">
+		<origin xyz="${backWheelX} ${chassisWidth/2+wheelClearance-wheelWidth/2} ${-wheelHeight}" rpy="0 0 0" />
+	</xacro:atv_wheel>
+	<xacro:atv_wheel wheel_prefix="RH">
+		<origin xyz="${backWheelX} ${-chassisWidth/2-wheelClearance+wheelWidth/2} ${-wheelHeight}" rpy="0 0 0" />
+	</xacro:atv_wheel>
+
+	<!-- ROS control plugin to move the robot in simulation -->
+	<gazebo>
+		<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+			<robotNamespace>$(arg robot_namespace)</robotNamespace>
+		</plugin>
+
+		<plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
+			<alwaysOn>true</alwaysOn>
+			<updateRate>50.0</updateRate>
+			<bodyName>base_link</bodyName>
+			<topicName>ground_truth/state</topicName>
+			<gaussianNoise>0.001</gaussianNoise>
+			<frameName>world</frameName>
+			<xyzOffsets>0 0 0</xyzOffsets>
+			<rpyOffsets>0 0 0</rpyOffsets>
+		</plugin>
+	</gazebo>
+
+	<xacro:arg name="gpu" default="true"/>
+
+    
+	<xacro:include filename="$(find lidar_description)/urdf/VLP-16.urdf.xacro"/>
+	<xacro:VLP-16 parent="base_link" name="velodyne" topic="velodyne_points" hz="10" samples="440" gpu="$(arg gpu)" collision_range="1.5" min_range="1.5">
+		<origin xyz="0.835 0.02 0.44" rpy="0 0 0" />
+	</xacro:VLP-16>
+</robot>

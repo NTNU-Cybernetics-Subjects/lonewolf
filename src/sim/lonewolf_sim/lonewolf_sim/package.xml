@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>lonewolf_sim</name>
+  <version>1.0.0</version>
+  <description>LoneWolf Simulator. Inspired by smb_sim from ntnu-arl</description>
+  <maintainer email="vegkar@stud.ntnu.no">Vegar Karlsen</maintainer>
+	
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>catkin_simple</buildtool_depend>
+  <depend>planner_msgs</depend>
+  <depend>roscpp</depend>
+  <depend>tf</depend>
+  <depend>geometry_msgs</depend>
+  <depend>smb_navigation</depend>
+	<depend>atv_opc</depend>
+	<depend>atv_path_tracker</depend>
+	<depend>atv_description</depend>
+	<depend>smb_msgs</depend>
+	<depend>atv_teleop_twist_joy</depend>
+	<depend>atv_gazebo</depend>
+	<depend>atv_lowlevel_controller</depend>
+	<depend>lidar_description</depend>
+    <depend>gbplanner_ros</depend>
+
+</package>
