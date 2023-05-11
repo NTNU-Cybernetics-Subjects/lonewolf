@@ -13,7 +13,8 @@ atv_velocity_controller:
   cmd_vel_timeout: 0.25
   velocity_rolling_window_size: 2
 
-  wheel_separation: 0.6604
+  # wheel_separation: 0.6604
+  wheel_separation: 0.6604 # was 0.6604
   # Base frame_id
   base_frame_id: base_link
 
@@ -39,9 +40,9 @@ atv_velocity_controller:
   angular:
     z:
       has_velocity_limits    : true
-      max_velocity           : 1   # rad/s
+      max_velocity           : 1   # was 1 rad/s
       has_acceleration_limits: true
-      max_acceleration       : 2   # rad/s^2
+      max_acceleration       : 2   # was 2 rad/s^2
 
 
 atv_front_left_wheel_velocity_controller:
