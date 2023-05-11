@@ -7,6 +7,6 @@
 		<param name="max_ang_vel" value="0.5"/>
 		<param name="desired_vel" value="0.5"/>
 		<param name="look_ahead_error_margin" value="0.2"/> <!-- 0.2 --> 
-		<param name="look_ahead_distance" value="0.9"/> <!-- 0.5 -->
+		<param name="look_ahead_distance" value="0.5"/> <!-- 0.5 -->
 	</node>
 </launch>
