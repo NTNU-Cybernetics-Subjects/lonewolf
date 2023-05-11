@@ -1,18 +1,16 @@
-# Path planning simulation for an ATV in a terrain based enviroment
+# Path planning simulation for an ATV in a terrain based enviroment uisng GBPlanner2
 
-This project is based on gbplanner_ros from ntnu-arl: [Link](https://github.com/ntnu-arl/gbplanner_ros).
-There are done some modification to better suit path planning in a terrain based enviroment, and the vehicle is changed to an model that is more like an actual ATV. The atv model is taken from [sigirdmellomseter/lonewolf](https://github.com/sigridmellemseter/lonewolf)
+This project is using on GBPlanner2 from ntnu-arl: [Link](https://github.com/ntnu-arl/gbplanner_ros) together with a 
+new simulator utilizing a atv model is taken from [sigirdmellomseter/lonewolf](https://github.com/sigridmellemseter/lonewolf)
 
-## Tutorial:
-Please refer to the [wiki](https://github.com/ntnu-arl/gbplanner_ros/wiki) page for detailed instructions to install and run the demo simulations as well as documentation of the planner interface and parameters.
-More results and video explaination of our method can be found on our website: [Link](https://www.autonomousrobotslab.com/exploration-planning.html)
+Please refer to the GBPlanner2 [wiki](https://github.com/ntnu-arl/gbplanner_ros/wiki) for documentation of the planner interface and parameters.
 
 ## Installation
 These instructions assume that ROS desktop-full of the appropriate ROS distro is installed.
 
 Install necessary libraries:
 
-For Ubuntu 20.04 and ROS Noetic:
+ROS Noetic:
 ```bash
 
 sudo apt install python3-catkin-tools \
@@ -37,26 +35,19 @@ catkin config -DCMAKE_BUILD_TYPE=Release
 catkin build
 ```
 
-### Ground Robot Demo
-the following command:
+### Run the simulator
 ```bash
-roslaunch gbplanner smb_sim.launch
+roslaunch lonewolf_sim gbplanner.launch
 ```
-In Ubuntu 18.04 with ROS Melodic, the gazebo node might crash when running the ground robot simulation. In this case set the `gpu` parameter to false [here](https://github.com/ntnu-arl/smb_simulator/blob/6ed9d738ffd045d666311a8ba266570f58dca438/smb_description/urdf/sensor_head.urdf.xacro#L20).
 
-## Results
+### To run GBPlanners smb_sim
+```
+roslaunch gbplanner smb_sim.launch
 
-Robot's of Team Cerberus running GBPlanner and GBPlanner2  
-![gbplanner_robots](img/gbplanner_robots.png)
+```
 
-Autonomous exploration mission in the Prize Round of the DARPA Subterranean Challenge Final Event using four ANYmal C legged robots (Chimera, Cerberus, Camel, Caiman), all running GBPlanner2 independantly.
-
-![final_circuit_all_robots](img/cerberus_final_run_compiled_hd.png)
 
 ## References
-
-### Explanation Video
-[![gbplanner_video](img/gbp2_vid.png)](https://www.youtube.com/watch?v=bTqFp1aODqU&list=PLu70ME0whad9Z4epZQ9VBYagKpyMyhZZ1&index=4)
 
 If you use this work in your research, please cite the following publications:
 
@@ -85,8 +76,3 @@ If you use this work in your research, please cite the following publications:
   pages={3306-3313},
   doi={10.1109/ICRA46639.2022.9812401}}
 ```
-
-You can contact us for any question:
-* [Tung Dang](mailto:tung.dang@nevada.unr.edu)
-* [Mihir Dharmadhikari](mailto:mihir.dharmadhikari@ntnu.no)
-* [Kostas Alexis](mailto:konstantinos.alexis@ntnu.no)
