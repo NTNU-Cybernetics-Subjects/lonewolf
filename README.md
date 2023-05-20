@@ -38,13 +38,26 @@ catkin build
 ### Simulator
 
 There are made five worlds that can be simulated in:
-<img src="images/complex_world.png" alt= “” width="30" height="30">
+
+<img src="images/complex_world.png" alt= “complex_world.world” width="150" height="150">
+<img src="images/heistadmoen_testroute.png" alt= “heistadmoen.world” width="150" height="150">
+<img src="images/maze_world.png" alt= “maze_world.world” width="150" height="150">
+<img src="images/normal_world.png" alt= “normal_world.world” width="150" height="150">
+<img src="images/simple_world.png" alt= “simple_world.world” width="150" height="150">
+
+To run the simulator simly use the command:
 
 ```bash
 roslaunch lonewolf_sim gbplanner.launch
 ```
+This will run the simulator in the default world; maze_world.world. It is possible to spesify one of the other worlds when running the simulator with the world argument:
 
-### To run GBPlanners smb_sim
+```bash
+roslaunch lonewolf_sim gbplanner.launch world:="other_world_name.world"
+```
+
+### GBPlanners smb_sim
+GBPlanners orignonal simulator can be run with the follorwing command:
 ```
 roslaunch gbplanner smb_sim.launch
 
