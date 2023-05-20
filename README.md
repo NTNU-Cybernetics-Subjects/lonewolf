@@ -38,7 +38,7 @@ catkin build
 ### Simulator
 
 There are made five worlds that can be simulated in:
-![](images/complex_world.png)
+<img src="complex_world.png" alt= “” width="30" height="30">
 
 ```bash
 roslaunch lonewolf_sim gbplanner.launch
