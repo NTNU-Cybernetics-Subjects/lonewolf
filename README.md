@@ -1,7 +1,7 @@
 # Path planning simulation for an ATV in a terrain based enviroment uisng GBPlanner2
 
-This project is using on GBPlanner2 from ntnu-arl: [Link](https://github.com/ntnu-arl/gbplanner_ros) together with a 
-new simulator utilizing a atv model is taken from [sigirdmellomseter/lonewolf](https://github.com/sigridmellemseter/lonewolf)
+This project is based on [GBPlanner2](https://github.com/ntnu-arl/gbplanner_ros) from ntnu-arl, together with a 
+new simulator utilizing a atv model taken from [sigirdmellomseter/lonewolf](https://github.com/sigridmellemseter/lonewolf)
 
 Please refer to the GBPlanner2 [wiki](https://github.com/ntnu-arl/gbplanner_ros/wiki) for documentation of the planner interface and parameters.
 
@@ -35,7 +35,11 @@ catkin config -DCMAKE_BUILD_TYPE=Release
 catkin build
 ```
 
-### Run the simulator
+### Simulator
+
+There are made five worlds that can be simulated in:
+![](images/complex_world.png)
+
 ```bash
 roslaunch lonewolf_sim gbplanner.launch
 ```
