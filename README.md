@@ -37,15 +37,25 @@ catkin build
 
 ### Simulator
 
-There are made five worlds that can be simulated in:
+There are made five worlds that can be simulated in; 
 
-<img src="images/complex_world.png" alt= “complex_world.world” title= “complex_world.world” width="150" height="150">
-<img src="images/heistdamoen_testroute.png" alt= “heistadmoen.world” title= “heistadmoen.world” width="150" height="150">
-<img src="images/maze_world.png" alt= “maze_world.world” title= “maze_world.world” width="150" height="150">
-<img src="images/normal_world.png" alt= “normal_world.world” title= “normal_world.world” width="150" height="150">
-<img src="images/simple_world.png" alt= “simple_world.world” title= “simple_world.world” width="150" height="150">
+maze_world.world, simple_world.world, normal_world.world, complex_world.world and heistadmoen.world:
 
-To run the simulator simly use the command:
+<p float="left">
+  <img src="images/maze_world.png" alt= “maze_world.world” title= “maze_world.world” width="150" />
+  <img src="images/simple_world.png" alt= “simple_world.world” title= “simple_world.world” width="150" />
+  <img src="images/normal_world.png" alt= “normal_world.world” title= “normal_world.world” width="150" />
+  <img src="images/complex_world.png" alt= “complex_world.world” title= “complex_world.world” width="150" />
+  <img src="images/heistdamoen_testroute.png" alt= “heistadmoen.world” title= “heistadmoen.world” width="150"/>
+</p>
+
+
+To run the simulator make sure you have sourced the enviornment:
+```bash
+~/lonewolf/devel/setup.bash
+
+```
+Then simly use the command:
 
 ```bash
 roslaunch lonewolf_sim gbplanner.launch
