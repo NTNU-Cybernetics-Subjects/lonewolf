@@ -39,8 +39,7 @@ catkin build
 
 There are made five worlds that can be simulated in:
 
-<img src="images/complex_world.png" alt= “complex_world.world” width="150" height="150">
-<img src="images/heistadmoen_testroute.png" alt= “heistadmoen.world” width="150" height="150">
+<img src="images/complex_world.png" alt= “complex_world.world” alt= “complex_world.world” width="150" height="150"><img src="images/heistdamoen_testroute.png" alt= “heistadmoen.world” width="150" height="150">
 <img src="images/maze_world.png" alt= “maze_world.world” width="150" height="150">
 <img src="images/normal_world.png" alt= “normal_world.world” width="150" height="150">
 <img src="images/simple_world.png" alt= “simple_world.world” width="150" height="150">
