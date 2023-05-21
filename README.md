@@ -1,4 +1,4 @@
-# Path planning simulation for an ATV in a terrain based enviroment using GBPlanner2
+# Path planning simulation for an ATV in a terrain based environment using GBPlanner2
 
 This project is based on [GBPlanner2](https://github.com/ntnu-arl/gbplanner_ros) from ntnu-arl, together with a 
 new simulator utilizing a atv model taken from [sigirdmellomseter/lonewolf](https://github.com/sigridmellemseter/lonewolf)
