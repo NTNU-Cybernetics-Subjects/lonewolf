@@ -1,7 +1,7 @@
 # Path planning simulation for an ATV in a terrain based environment using GBPlanner2
 
 This project is based on [GBPlanner2](https://github.com/ntnu-arl/gbplanner_ros) from ntnu-arl, together with a 
-new simulator utilizing a atv model taken from [sigirdmellomseter/lonewolf](https://github.com/sigridmellemseter/lonewolf)
+new simulator utilizing a atv model from [sigirdmellomseter/lonewolf](https://github.com/sigridmellemseter/lonewolf)
 
 Please refer to the GBPlanner2 [wiki](https://github.com/ntnu-arl/gbplanner_ros/wiki) for documentation of the planner interface and parameters.
 
@@ -22,7 +22,7 @@ ros-noetic-octomap-ros
 ```
 
 Clone and update the required packages:
-(make sure to bee in the root project folder: <path_to_lonewolf> )
+(make sure to be in the root project folder: <path_to_lonewolf> )
 ```bash
 wstool init
 wstool merge dependecies_ssh.rosinstall
@@ -37,7 +37,7 @@ catkin build
 
 ### Simulator
 
-There are made five worlds that can be simulated in; 
+There are five worlds that can be simulated; 
 
 maze_world.world, simple_world.world, normal_world.world, complex_world.world and heistadmoen.world:
 
@@ -55,7 +55,7 @@ To run the simulator make sure you have sourced the enviornment:
 ~/lonewolf/devel/setup.bash
 
 ```
-Then simly use the command:
+Then use the command:
 
 ```bash
 roslaunch lonewolf_sim gbplanner.launch
@@ -67,7 +67,7 @@ roslaunch lonewolf_sim gbplanner.launch world:="other_world_name.world"
 ```
 
 ### GBPlanners smb_sim
-GBPlanners orignonal simulator can be run with the follorwing command:
+GBPlanners original simulator can be run with the following command:
 ```
 roslaunch gbplanner smb_sim.launch
 
@@ -76,7 +76,7 @@ roslaunch gbplanner smb_sim.launch
 
 ## References
 
-If you use this work in your research, please cite the following publications:
+If you use this work in your research, please cite the following publications from the creators of GBPlanner2:
 
 **Graph-based subterranean exploration path planning using aerial and legged robots**
 ```
